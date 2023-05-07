@@ -20,7 +20,7 @@ const Home = () => {
   const [searchText, setSearchText] = useState('abc');
 
   return (
-    <section>
+    <section className="max-w-7xl mx-auto">
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">
           The Community Showcase
@@ -34,6 +34,7 @@ const Home = () => {
           <FormField/>
         </div>
 
+        {/* if Loading-true(show Loader) else (show Showing results for "xyz") */}
         <div className="mt-10">
           {loading ? (
             <div className="flex justify-center items-center">
