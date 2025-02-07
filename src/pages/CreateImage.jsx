@@ -19,8 +19,8 @@ const CreateImage = () => {
   const options = {
     model: ["dall-e-2", "dall-e-3"],
     quality: form.model === "dall-e-2" ? ["basic"] : ["standard", "hd"],
-    size: form.model === "dall-e-2" 
-      ? ["256x256", "512x512", "1024x1024"] 
+    size: form.model === "dall-e-2"
+      ? ["256x256", "512x512", "1024x1024"]
       : ["256x256", "512x512", "1024x1024", "landscape", "portrait"],
     style: form.model === "dall-e-2" ? ["simple"] : ["natural", "vivid"],
   };
@@ -30,7 +30,7 @@ const CreateImage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "model") {
       // Reset form when model changes
       setForm({
@@ -39,13 +39,12 @@ const CreateImage = () => {
         quality: value === "dall-e-2" ? "basic" : "standard",
         size: value === "dall-e-2" ? "256x256" : "256x256",
         style: value === "dall-e-2" ? "simple" : "natural",
-      });     
+      });
     } else {
       // Normal update for other fields
       setForm((prev) => ({ ...prev, [name]: value }));
     }
   };
-  
 
   const handleSurpriseMe = (e) => {
     const randomPrompt = getRandomPrompt(form.prompt);
@@ -146,7 +145,7 @@ const CreateImage = () => {
                 </div>
               </label>
             </div>
-            
+
           </div>
         </div>
 
