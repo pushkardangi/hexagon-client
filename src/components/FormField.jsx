@@ -1,5 +1,3 @@
-import React from "react";
-
 const FormField = ({
   labelName,
   type,
@@ -11,7 +9,8 @@ const FormField = ({
   handleSurpriseMe,
 }) => (
   <div>
-    <div className="flex items-center gap-2 mb-2">
+    {/* Label */}
+    <div className="flex items-center gap-2">
       <label htmlFor={name} className="block text-sm font-medium text-gray-900">
         {labelName}
       </label>
@@ -19,12 +18,14 @@ const FormField = ({
         <button
           type="button"
           onClick={handleSurpriseMe}
-          className="font-semibold text-xs bg-[#EcECF1] py-1 px-2 rounded-[5px] text-black"
+          className="font-semibold text-xs bg-[#EcECF1] active:bg-[#dbdbed] transition-colors duration-200 py-1 px-2 rounded-[5px] text-black"
         >
           Surprise me
         </button>
       )}
     </div>
+
+    {/* Input field */}
     <input
       type={type} id={name} name={name} placeholder={placeholder} value={value}
       onChange={handleChange} required autoComplete="off"

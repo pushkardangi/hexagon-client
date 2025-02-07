@@ -1,7 +1,9 @@
-import Home from './Home';
-import CreatePost from './CreatePost';
+import Gallery from "./Gallery";
+import CreateImage from "./CreateImage";
+import Main from "./Main";
 
 export {
-    Home,
-    CreatePost,
-}
+    CreateImage,
+    Gallery,
+    Main,
+};

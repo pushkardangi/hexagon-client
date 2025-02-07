@@ -13,9 +13,9 @@ const RenderCards = ({data, title}) =>{
   )
 }
 
-const Home = () => {
+const Gallery = () => {
   const [loading, setLoading] = useState(false);
-  const [allPosts, setAllPosts] = useState(null);
+  const [allImages, setAllImages] = useState(null);
   
   const [searchText, setSearchText] = useState('abc');
 
@@ -68,4 +68,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Gallery;
