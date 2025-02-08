@@ -5,6 +5,8 @@ import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
 import { FormField, Loader, Radio } from "../components";
 
+import { generateImageApi } from "../api/image.api.js";
+
 const CreateImage = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -26,7 +28,7 @@ const CreateImage = () => {
   };
 
   const [generatingImg, setGeneratingImg] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,8 +55,12 @@ const CreateImage = () => {
 
   const handleSubmit = () => {};
 
-  const generateImage = (e) => {
-    console.log("Form Data:", form)
+  const generateImage = async (e) => {
+    // resume later
+    setGeneratingImg(true);
+    const result = await generateImageApi(form);
+    console.log("Result:", result)
+    setGeneratingImg(false);
   };
 
   const saveGeneratedImage = () => {};
@@ -64,8 +70,7 @@ const CreateImage = () => {
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
         <p className="mt-2 text-[#666e75] text-[14px]">
-          Generate an imaginative image through DALL-E AI and share it with the
-          community
+          Bring your ideas to life! Generate stunning AI images with DALL-E and use them instantly.
         </p>
       </div>
 
@@ -149,40 +154,31 @@ const CreateImage = () => {
           </div>
         </div>
 
-        {/* Generate Image Button */}
-        <div className="mt-5 flex gap-5">
+        <div className="mt-5 flex gap-4">
+          {/* Generate Image Button */}
           <button
             type="button"
             onClick={generateImage}
-            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            className=" text-white bg-yellow-500 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             {generatingImg ? "Generating..." : "Generate"}
           </button>
+
+          {/* Save Image Button */}
+          {form.image && (
+            <button
+              type="submit"
+              onClick={saveGeneratedImage}
+              className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            >
+              {saving ? "Saving..." : "Save to Gallery"}
+            </button>
+          )}
         </div>
 
-        {/* Save Image Button */}
-        <div className="mt-10">
-          <p className="mt-2 text-[#666e75] text-[14px]">
-            Save your AI masterpiece to Studio and access it anytime.
-          </p>
-          <button
-            type="submit"
-            onClick={saveGeneratedImage}
-            className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-          >
-            {loading ? "Saving..." : "Save to Gallery"}
-          </button>
-        </div>
       </form>
     </section>
   );
 };
-
-const Section = ({ title, children }) => (
-  <div>
-    <div className="font-bold">{title}</div>
-    <div className="flex flex-wrap gap-x-4">{children}</div>
-  </div>
-);
 
 export default CreateImage;
