@@ -1,15 +1,18 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import { Header } from "./components";
-import { Main } from "./pages";
+import { Home } from "./pages";
 
 const App = () => {
+  const user = false;
+
   return (
-    <BrowserRouter>
-      <Header />
-      <Main />
-    </BrowserRouter>
+    <Router>
+      <Routes>
+          <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 };
 

@@ -1,10 +1,8 @@
 import { axiosInstance, handleApiError } from "./axiosInstance.js";
 
-export const registerUser = async (email, firstName, lastName, password) => {
+export const registerUser = async (userData) => {
   try {
-    const userData = { email, firstName, lastName, password };
-
-    const response = await axiosInstance.post("/auth/register", userData, {
+    const response = await axiosInstance.post("/users/register", userData, {
       headers: { "Content-Type": "application/json" },
     });
 

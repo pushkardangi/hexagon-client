@@ -3,21 +3,34 @@
 @tailwind utilities;
 
 * {
-    font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 @media screen and (min-width: 480px) {
-    .card:nth-child(7n + 1) {
-        grid-column: auto/span 2;
-        grid-row: auto/span 2;
-    }
+  .card:nth-child(7n + 1) {
+    grid-column: auto/span 2;
+    grid-row: auto/span 2;
+  }
 }
 
 .prompt::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 }
- 
+
 .prompt::-webkit-scrollbar-thumb {
   background-color: #666e75;
   border-radius: 5px;
+}
+
+.swiper-pagination-bullet {
+  width: 50px;
+  height: 5px;
+  border-radius: 1rem;
+  background-color: rgb(130, 130, 130);
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: rgb(92, 92, 92);
+  width: 55px;
 }
