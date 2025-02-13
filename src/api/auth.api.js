@@ -12,10 +12,8 @@ export const registerUser = async (userData) => {
   }
 };
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (credentials) => {
   try {
-    const credentials = { email, password };
-
     const response = await axiosInstance.post("/auth/login", credentials, {
       headers: { "Content-Type": "application/json" },
     });

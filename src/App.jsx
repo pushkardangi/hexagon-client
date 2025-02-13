@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-import { Home } from "./pages";
+import { Home, Auth, ForgotPassword } from "./pages";
 
 const App = () => {
   const user = false;
@@ -9,8 +9,10 @@ const App = () => {
   return (
     <Router>
       <Routes>
-          <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
-          <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+        <Route path="/*" element={user ? <Home /> : <Navigate to="/auth/login" />} />
+        <Route path="/auth/*" element={!user ? <Auth /> : <Navigate to="/" />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

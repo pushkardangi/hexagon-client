@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
-import { Carousel, InputField, Error } from "../components";
+import { InputField, Error } from "../components";
 import { registerUser } from "../api/auth.api";
 
 const Register = () => {
@@ -38,8 +38,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
-      const response = await registerUser(form);
+
+      const userData = {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        password: form.password.trim(),
+      };
+
+      const response = await registerUser(userData);
 
       if (response.error) {
         setErrors({...errors, general: response.error});
@@ -48,20 +57,13 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col xl:flex-row h-screen">
-      {/* Carousel */}
-      <div className="w-full h-1/3 xl:w-1/2 xl:h-full flex items-center justify-center">
-        <Carousel />
-      </div>
-
-      {/* Form */}
       <div className="w-full h-2/3 xl:w-1/2 xl:h-full flex items-center justify-center">
         <div className="bg-white p-6">
 
           <h2 className="text-5xl font-bold text-left">Create an account</h2>
 
           <p className="text-left text-sm text-gray-600 mt-8">
-            Already have an account? <Link to="/login" className="text-blue-600 font-medium">Log in</Link>
+            Already have an account? <Link to="/auth/login" className="text-blue-600 font-medium">Log in</Link>
           </p>
           <Error error={errors.general} />
 
@@ -150,7 +152,6 @@ const Register = () => {
           </form>
         </div>
       </div>
-    </div>
   );
 };
 
