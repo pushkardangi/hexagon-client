@@ -1,8 +1,7 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { Login, Register } from "../pages";
+import { Outlet } from "react-router-dom";
 import { Carousel } from "../components";
 
-const Auth = () => {
+const AuthLayout = () => {
   return (
     <div className="flex flex-col xl:flex-row h-screen">
       {/* Carousel */}
@@ -11,13 +10,9 @@ const Auth = () => {
       </div>
 
       {/* Forms */}
-      <Routes>
-        <Route index element={<Navigate to="login" />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Routes>
+      <Outlet /> {/* This will render Login or Register */}
     </div>
   );
 };
 
-export default Auth;
+export default AuthLayout;

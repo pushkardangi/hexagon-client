@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 import { InputField, Error } from "../components";
 import { loginUser } from "../api/auth.api";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -30,6 +31,9 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,11 +46,16 @@ const Login = () => {
 
       const response = await loginUser(credentials);
 
-      // console.log("Response:", response)
-
       if (response.error) {
         setErrors({...errors, general: response.error});
       }
+
+      // console.log("Response:", response)
+
+      // update the context value (WIP)
+      // login(response)
+
+      navigate("/");
     }
   };
 
