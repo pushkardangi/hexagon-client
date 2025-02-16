@@ -6,7 +6,7 @@ export const registerUser = async (userData) => {
       headers: { "Content-Type": "application/json" },
     });
 
-    return response;
+    return response.data;
   } catch (error) {
     return handleApiError(error);
   }

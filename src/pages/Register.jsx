@@ -15,6 +15,7 @@ const Register = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -23,6 +24,7 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+    setErrors({}); // clear errors when user modifies input to correct them
   };
 
   const validateForm = () => {
@@ -37,9 +39,11 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      setLoading(true);
 
-    if (validateForm()) {
+      if (!validateForm()) return;
 
       const userData = {
         firstName: form.firstName.trim(),
@@ -49,10 +53,21 @@ const Register = () => {
       };
 
       const response = await registerUser(userData);
+      const data = response.data;
 
-      if (response.error) {
-        setErrors({...errors, general: response.error});
+      if (data?.emailSent) {
+        alert(`A confirmation email has been sent to ${userData.email}. Please check your inbox and follow the instructions to verify your account.`)
       }
+
+      // handles API errors
+      if (response?.error) {
+        setErrors((prev) => ({...prev, general: response.error}));
+      }
+
+    } catch (error) {
+      setErrors((prev) => ({...prev, general: error.message}))
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,9 +160,10 @@ const Register = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+              className={`w-full text-white py-2 rounded-md ${ loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700 transition"}`}
+              disabled={loading}
             >
-              Create Account
+              {loading ? "Creating Account . . ." : "Create Account"}
             </button>
           </form>
         </div>
