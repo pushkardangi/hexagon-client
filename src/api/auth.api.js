@@ -5,7 +5,6 @@ export const registerUser = async (userData) => {
     const response = await axiosInstance.post("/users/register", userData, {
       headers: { "Content-Type": "application/json" },
     });
-
     return response.data;
   } catch (error) {
     return handleApiError(error);
@@ -17,8 +16,7 @@ export const loginUser = async (credentials) => {
     const response = await axiosInstance.post("/auth/login", credentials, {
       headers: { "Content-Type": "application/json" },
     });
-
-    return response;
+    return response.data;
   } catch (error) {
     return handleApiError(error);
   }
@@ -26,7 +24,8 @@ export const loginUser = async (credentials) => {
 
 export const renewTokens = async () => {
   try {
-    await axiosInstance.post("/auth/renew-tokens");
+    const response = await axiosInstance.post("/auth/renew-tokens");
+    return response.data;
   } catch (error) {
     return handleApiError(error);
   }
@@ -34,7 +33,8 @@ export const renewTokens = async () => {
 
 export const logoutUser = async () => {
   try {
-    await axiosInstance.post("/auth/logout");
+    const response = await axiosInstance.post("/auth/logout");
+    return response.data;
   } catch (error) {
     return handleApiError(error);
   }

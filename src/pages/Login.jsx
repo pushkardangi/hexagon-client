@@ -13,6 +13,7 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -21,6 +22,7 @@ const Login = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+    setErrors({});
   };
 
   const validateForm = () => {
@@ -36,8 +38,10 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    if (validateForm()) {
+    try {
+      if (!validateForm()) return;
 
       const credentials = {
         email: form.email.trim(),
@@ -46,16 +50,20 @@ const Login = () => {
 
       const response = await loginUser(credentials);
 
-      if (response.error) {
-        setErrors({...errors, general: response.error});
+      if (response?.error) {
+        setErrors((prev) => ({...prev, general: response.error}));
+        return;
       }
 
-      // console.log("Response:", response)
-
-      // update the context value (WIP)
-      // login(response)
+      // update the context value
+      login(response.data)
 
       navigate("/");
+
+    } catch (error) {
+      setErrors((prev) => ({...prev, general: error.message}));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -113,11 +121,12 @@ const Login = () => {
 
           {/* Submit Button */}
           <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Login now
-          </button>
+              type="submit"
+              className={`w-full text-white py-2 rounded-md ${ loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700 transition"}`}
+              disabled={loading}
+            >
+              {loading ? "Logging in . . ." : "Login now"}
+            </button>
         </form>
       </div>
     </div>
