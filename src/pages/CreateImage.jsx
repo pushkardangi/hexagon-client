@@ -29,7 +29,7 @@ const CreateImage = () => {
     quality: form.model === "dall-e-2" ? ["basic"] : ["standard", "hd"],
     size: form.model === "dall-e-2"
       ? ["256x256", "512x512", "1024x1024"]
-      : ["256x256", "512x512", "1024x1024", "landscape", "portrait"],
+      : ["1024x1024", "landscape", "portrait"],
     style: form.model === "dall-e-2" ? ["simple"] : ["natural", "vivid"],
   };
 
@@ -43,7 +43,7 @@ const CreateImage = () => {
         ...form,
         model: value,
         quality: value === "dall-e-2" ? "basic" : "standard",
-        size: value === "dall-e-2" ? "256x256" : "256x256",
+        size: value === "dall-e-2" ? "256x256" : "1024x1024",
         style: value === "dall-e-2" ? "simple" : "natural",
       });
     } else {
