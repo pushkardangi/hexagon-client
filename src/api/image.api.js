@@ -1,17 +1,26 @@
-import { axiosInstance } from "./axiosInstance";
+import { axiosInstance, handleApiError } from "./axiosInstance";
 
 export const generateImageApi = async (data) => {
-  const response = await axiosInstance.post("/images/generate", data);
-  return response.data;
+  try {
+    const response = await axiosInstance.post("/images/generate", data, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
 };
 
-export const uploadImageApi = async (file) => {
-  const formData = new FormData();
-  formData.append("image", file);
-  const response = await axiosInstance.post("/images/upload", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return response.data;
+export const uploadImageApi = async (data) => {
+  try {
+    const response = await axiosInstance.post("/images/upload", data, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
 };
 
 export const getSavedImagesApi = async (page = 1, limit = 12) => {

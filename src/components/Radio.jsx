@@ -1,4 +1,4 @@
-const Radio = ({ name, value, handleChange, selectedValue }) => {
+const Radio = ({ name, value, handleChange, selectedValue, disable }) => {
   const label = value.charAt(0).toUpperCase() + value.slice(1);
   const isSelected = selectedValue === value; // Check if this option is selected
 
@@ -16,6 +16,7 @@ const Radio = ({ name, value, handleChange, selectedValue }) => {
         checked={isSelected}
         onChange={handleChange}
         className="hidden"
+        disabled={disable}
       />
     </label>
   );

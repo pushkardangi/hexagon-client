@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
 
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
-import { FormField, Loader, Radio } from "../components";
+import { Error, FormField, Loader, Radio } from "../components";
 
-import { generateImageApi } from "../api/image.api.js";
+import { generateImageApi, uploadImageApi } from "../api/image.api.js";
 
 const CreateImage = () => {
-  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     prompt: "",
     image: "",
@@ -18,6 +17,13 @@ const CreateImage = () => {
     style: "simple",
   });
 
+  let generatedImage = useRef(null); // store the saved image data
+
+  const [message, setMessage] = useState(null);
+  const [generatingImg, setGeneratingImg] = useState(false);
+  const [savingImg, setSavingImg] = useState(false);
+
+  // Options dynamically change based on selected model (UI)
   const options = {
     model: ["dall-e-2", "dall-e-3"],
     quality: form.model === "dall-e-2" ? ["basic"] : ["standard", "hd"],
@@ -27,9 +33,7 @@ const CreateImage = () => {
     style: form.model === "dall-e-2" ? ["simple"] : ["natural", "vivid"],
   };
 
-  const [generatingImg, setGeneratingImg] = useState(false);
-  const [saving, setSaving] = useState(false);
-
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -46,24 +50,81 @@ const CreateImage = () => {
       // Normal update for other fields
       setForm((prev) => ({ ...prev, [name]: value }));
     }
+
+    setMessage("");
   };
 
-  const handleSurpriseMe = (e) => {
+  // Generate a random prompt
+  const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
-    setForm({ ...form, prompt: randomPrompt });
+    setForm((prev) => ({...prev, prompt: randomPrompt}));
+    setMessage("");
   };
 
-  const handleSubmit = () => {};
+  const handleGenerateImage = async () => {
+    try {
+      setMessage("");
+      setGeneratingImg(true);
+      setForm((prev) => ({...prev, image: "", prompt: prev.prompt.trim()}));
 
-  const generateImage = async (e) => {
-    // resume later
-    setGeneratingImg(true);
-    const result = await generateImageApi(form);
-    console.log("Result:", result)
-    setGeneratingImg(false);
+      if (!form.prompt) {
+        setMessage("Please enter a prompt.");
+        setGeneratingImg(false);
+        return;
+      }
+
+      const response = await generateImageApi(form);
+
+      if (response?.error) {
+        setMessage(response.error);
+        setGeneratingImg(false);
+        return;
+      }
+
+      setForm((prev) => ({...prev, image: response.data }));
+
+      // store image details, use when saving the image
+      generatedImage.current = { ...form, image: response.data };
+
+    } catch (error) {
+      setMessage(error);
+      setGeneratingImg(false);
+    }
   };
 
-  const saveGeneratedImage = () => {};
+  const validateForm = () => {
+    let data = generatedImage.current;
+    let newMessage = "";
+    if (!data.prompt.trim()) newMessage = "Prompt is required";
+    if (!data.image.trim()) newMessage = "Image is required";
+    setMessage(newMessage);
+    return newMessage === "";
+  };
+
+  const handleSaveImage = async () => {
+    try {
+      setSavingImg(true);
+
+      if (!validateForm()) {
+        setSavingImg(false);
+        return;
+      }
+
+      const response = await uploadImageApi(generatedImage.current);
+
+      if (response?.error) {
+        setMessage(response.error);
+        setSavingImg(false);
+        return;
+      }
+
+    } catch (error) {
+      setMessage(error);
+      setSavingImg(false);
+    } finally {
+      setSavingImg(false);
+    }
+  };
 
   return (
     <section className="max-w-7xl mx-auto">
@@ -74,7 +135,7 @@ const CreateImage = () => {
         </p>
       </div>
 
-      <form className="mt-16 max-w-5xl" onSubmit={handleSubmit}>
+      <form className="mt-16 max-w-5xl">
         <div className="flex flex-col gap-5">
           <FormField
             labelName="Prompt"
@@ -88,21 +149,14 @@ const CreateImage = () => {
           />
 
           <div className="flex md:flex-row flex-col gap-5">
-            {/* Image Preview */}
+            {/* Display generated image or placeholder */}
             <div className="relative bg-gray-50 border border-gray-300 text-sm rounded-lg p-3 w-64 h-64 flex justify-center items-center">
-              {form.photo ? (
-                <img
-                  src={form.photo}
-                  alt={form.prompt}
-                  className="w-full h-full object-contain"
-                />
-              ) : (
-                <img
-                  src={preview}
-                  alt="preview"
-                  className="w-9/12 h-9/12 object-contain opacity-40"
-                />
-              )}
+              <img
+                src={form.image || preview}
+                alt={form.prompt || "preview image"}
+                className="w-full h-full object-contain"
+                onLoad={() => setGeneratingImg(false)}
+              />
 
               {generatingImg && (
                 <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
@@ -112,7 +166,7 @@ const CreateImage = () => {
             </div>
 
             {/* Image Customization Buttons */}
-            <div className="md:px-4 space-y-3">
+            <div className={`${(generatingImg || savingImg) && "pointer-events-none"} md:px-4 space-y-3`}>
 
               <label className="block">
                 <span className="font-bold">Model</span>
@@ -154,28 +208,29 @@ const CreateImage = () => {
           </div>
         </div>
 
-        <div className="mt-5 flex gap-4">
+        <div className="mt-5 flex flex-col sm:flex-row gap-4 items-center">
           {/* Generate Image Button */}
           <button
             type="button"
-            onClick={generateImage}
-            className=" text-white bg-yellow-500 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+            onClick={handleGenerateImage}
+            disabled={savingImg || generatingImg}
+            className="font-medium rounded-md text-sm w-full md:w-48 px-5 py-2.5 text-center text-white bg-yellow-500"
           >
-            {generatingImg ? "Generating..." : "Generate"}
+            {generatingImg ? "Generating . . ." : "Generate"}
           </button>
 
           {/* Save Image Button */}
-          {form.image && (
-            <button
-              type="submit"
-              onClick={saveGeneratedImage}
-              className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-            >
-              {saving ? "Saving..." : "Save to Gallery"}
-            </button>
-          )}
-        </div>
+          <button
+            type="button"
+            onClick={handleSaveImage}
+            disabled={!form.image || generatingImg || savingImg}
+            className={`${(!form.image || generatingImg) && "cursor-not-allowed opacity-30"} font-medium rounded-md text-sm w-full md:w-48 px-5 py-2.5 text-center text-white bg-green-700`}
+          >
+            {savingImg ? "Saving . . ." : "Save to Gallery"}
+          </button>
 
+          <Error error={message} />
+        </div>
       </form>
     </section>
   );
