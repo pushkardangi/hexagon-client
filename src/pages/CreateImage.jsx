@@ -29,7 +29,7 @@ const CreateImage = () => {
     quality: form.model === "dall-e-2" ? ["basic"] : ["standard", "hd"],
     size: form.model === "dall-e-2"
       ? ["256x256", "512x512", "1024x1024"]
-      : ["1024x1024", "landscape", "portrait"],
+      : ["1024x1024", "1792x1024", "1024x1792"],
     style: form.model === "dall-e-2" ? ["simple"] : ["natural", "vivid"],
   };
 
@@ -87,9 +87,10 @@ const CreateImage = () => {
       generatedImage.current = { ...form, image: response.data };
 
     } catch (error) {
-      setMessage(error);
+      setMessage(error.message);
       setGeneratingImg(false);
     }
+    console.log(message)
   };
 
   const validateForm = () => {

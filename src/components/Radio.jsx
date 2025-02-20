@@ -1,6 +1,12 @@
 const Radio = ({ name, value, handleChange, selectedValue }) => {
 
-  const label = value.charAt(0).toUpperCase() + value.slice(1);
+  let label = value.charAt(0).toUpperCase() + value.slice(1);
+
+  if (name === "size") {
+    if (value === "1792x1024") label = "Landscape";
+    if (value === "1024x1792") label = "Portrait";
+  }
+
   const isSelected = selectedValue === value; // Check if this option is selected
 
   return (
