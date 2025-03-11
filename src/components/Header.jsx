@@ -1,8 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 
 import { logo } from "../assets";
-import { LuPencil } from "react-icons/lu";
-import { FaRegImages } from "react-icons/fa6";
+import { Pencil, Images } from "lucide-react";
 
 const Header = () => {
   const location = useLocation();
@@ -19,14 +18,14 @@ const Header = () => {
           to="/"
           className="font-inter font-medium bg-[#6469ff] hover:bg-[#4e5cf5] transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
         >
-          <LuPencil /> Create
+           <Pencil className="w-5 h-5"/> Create
         </Link>
       ) : (
         <Link
           to="/gallery"
           className="font-inter font-medium bg-[#6469ff] hover:bg-[#4e5cf5] transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
         >
-          <FaRegImages /> Gallery
+          <Images className="w-5 h-5"/> Gallery
         </Link>
       )}
     </header>
