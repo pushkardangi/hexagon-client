@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Auth, Login, Register, ForgotPassword, Home, CreateImage, Gallery } from "./pages";
 import useAuth from "./hooks/useAuth"
 import AppProviders from "./contexts/Provider";
-import { getSavedImagesApi } from "./api/image.api";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -17,7 +16,7 @@ const App = () => {
           {/* Protected Routes */}
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
             <Route index element={<CreateImage />} />
-            <Route path="gallery" element={<Gallery />} loader={getSavedImagesApi} /> {/* WIP */}
+            <Route path="gallery" element={<Gallery />} />
           </Route>
 
           {/* Auth Routes */}
