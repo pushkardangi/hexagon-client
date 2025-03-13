@@ -111,7 +111,7 @@ const Gallery = () => {
           </button>
         ) : (
           <p className="text-gray-500 text-center my-4 font-inter">
-            🎉 You've reached the end!
+            {images.length ? "🎉 You've reached the end!" : "Looks like your gallery is empty! Start uploading images to see them here. 🚀"}
           </p>
         )}
       </div>
