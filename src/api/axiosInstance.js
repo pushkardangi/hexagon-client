@@ -17,7 +17,9 @@ export const handleApiError = async (error) => {
     if (status === 401 && (errorMessage === "Access Token Expired!" || errorMessage === "Unauthorized! Access token is missing!")) {
       try {
         await renewTokens();
-        return axiosInstance(error?.config); // retry the original request
+        const result = axiosInstance(error?.config); // retry the original request
+        console.log("Result:", result);
+        return result;
       } catch (tokenError) {
         return { error: `Session expired. Please log in again: ${tokenError}` };
       }
@@ -25,6 +27,7 @@ export const handleApiError = async (error) => {
 
     return { error: errorMessage };
   } catch (err) {
+    console.log("err:",err)
     throw new Error("An unexpected err occurred inside api error!");
   }
 };
