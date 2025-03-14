@@ -40,6 +40,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     try {
+      console.time("Total Register Time"); // RM Log
       e.preventDefault();
       setLoading(true);
 
@@ -51,8 +52,11 @@ const Register = () => {
         email: form.email.trim(),
         password: form.password.trim(),
       };
-
+      
+      console.time("Register API Call"); // RM Log
       const response = await registerUser(userData);
+      console.time("Register API Call"); // RM Log
+
       const data = response.data;
 
       if (data?.emailSent) {
@@ -63,6 +67,8 @@ const Register = () => {
       if (response?.error) {
         setErrors((prev) => ({...prev, general: response.error}));
       }
+
+      console.timeEnd("Total Register Time"); // RM Log
 
     } catch (error) {
       setErrors((prev) => ({...prev, general: error.message}))

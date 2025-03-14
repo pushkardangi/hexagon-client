@@ -2,9 +2,11 @@ import { axiosInstance, handleApiError } from "./axiosInstance.js";
 
 export const registerUser = async (userData) => {
   try {
+    console.time("Register Axios"); // RM Log
     const response = await axiosInstance.post("/users/register", userData, {
       headers: { "Content-Type": "application/json" },
     });
+    console.timeEnd("Register Axios"); // RM Log
     return response.data;
   } catch (error) {
     return handleApiError(error);
@@ -13,9 +15,11 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
   try {
+    console.time("Login Axios"); // RM Log
     const response = await axiosInstance.post("/auth/login", credentials, {
       headers: { "Content-Type": "application/json" },
     });
+    console.timeEnd("Login Axios"); // RM Log
     return response.data;
   } catch (error) {
     return handleApiError(error);
