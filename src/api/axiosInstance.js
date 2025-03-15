@@ -8,10 +8,10 @@ export const axiosInstance = axios.create({
 
 export const handleApiError = async (error) => {
   try {
-    const errorMessage = error?.response?.data?.message;
+    const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";
     const status = error?.response?.status;
 
-    console.log("Error occured :", status, errorMessage);
+    console.log("Error occured :", status, errorMessage); // Log
 
     // when Access token expired, get new access token and prompt user to try again
     if (status === 401 && (errorMessage === "Access Token Expired!" || errorMessage === "Unauthorized! Access token is missing!")) {
