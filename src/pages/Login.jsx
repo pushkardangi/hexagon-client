@@ -37,7 +37,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    console.time("Total Login Time"); // RM Log
     e.preventDefault();
     setLoading(true);
 
@@ -48,11 +47,9 @@ const Login = () => {
         email: form.email.trim(),
         password: form.password.trim(),
       };
-      
-      console.time("Login API Call"); // RM Log
+
       const response = await loginUser(credentials);
-      console.timeEnd("Login API Call"); // RM Log
-      
+
       if (response?.error) {
         setErrors((prev) => ({...prev, general: response.error}));
         return;
@@ -60,8 +57,6 @@ const Login = () => {
 
       // update the context value
       login(response.data)
-
-      console.timeEnd("Total Login Time"); // RM Log
 
       navigate("/");
 
