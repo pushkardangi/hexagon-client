@@ -101,16 +101,16 @@ const Gallery = () => {
             ))}
       </div>
 
-      <div className="mt-10 flex justify-center md:justify-end">
+      <div className={`mt-10 flex justify-center ${images.length ? "md:justify-end" : ""}`}>
       {pagination.hasMoreImages ? (
           <button
-            className="px-4 py-2 font-inter text-white rounded-md bg-custom-blue-3 hover:bg-custom-blue-4 shadow-lg shadow-slate-300 flex gap-2"
+            className="px-4 py-2 font-inter text-white rounded-md bg-custom-blue-3 hover:bg-custom-blue-4 shadow-lg shadow-slate-300 flex gap-2 transition duration-300"
             onClick={loadMoreImages}
           >
             <PlusCircle className="animate-pulse" /> Load more
           </button>
         ) : (
-          <p className="text-gray-500 text-center my-4 font-inter">
+          <p className="text-gray-500 my-4 font-inter">
             {images.length ? "🎉 You've reached the end!" : "Looks like your gallery is empty! Start uploading images to see them here. 🚀"}
           </p>
         )}
