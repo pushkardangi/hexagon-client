@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { saveAs } from "file-saver";
 import { getSavedImagesApi } from "../api/image.api";
 import { Download, PlusCircle } from "lucide-react";
+
+// import { allImages } from "../constants/assets"; // temp
 
 const getThumbnailUrl = (url) => {
   if (!url) return "";
@@ -18,8 +22,8 @@ const useIsTouchDevice = () => {
 };
 
 const Gallery = () => {
-  const [loading, setLoading] = useState(true);
-  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true); // false
+  const [images, setImages] = useState([]); // allImages
 
   const [pagination, setPagination] = useState({
     hasMoreImages: true,
@@ -27,6 +31,7 @@ const Gallery = () => {
   });
 
   const isTouchDevice = useIsTouchDevice();
+  const [downloadProgress, setDownloadProgress] = useState(0);  // add this to toast message
   
   const fetchGalleryImages = async () => {
     try {
@@ -53,9 +58,21 @@ const Gallery = () => {
     fetchGalleryImages();
   }, [pagination.page]);
 
-  const handleDownloadImageOffline = async () => {
-    console.log("Image downloaded successfully.", Math.random()); // log
-  }
+  const handleDownloadImageOffline = async ({ image, prompt }) => {
+    try {
+      const response = await axios.get(image, {
+        responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setDownloadProgress(percentCompleted);
+        },
+      });
+
+      saveAs(response.data, `Hexagon - ${prompt}.png`);
+    } catch (error) {
+      console.alert("Error downloading the image:", error, "\nPlease try again.");
+    }
+  };
 
   return (
     <section className="max-w-7xl mx-auto">
@@ -84,7 +101,7 @@ const Gallery = () => {
                 />
 
                 {isTouchDevice ? (
-                  <div onClick={handleDownloadImageOffline} className="absolute bottom-0 right-0 bg-white m-2 p-2 rounded-md">
+                  <div onClick={() => handleDownloadImageOffline(img)} className="absolute bottom-0 right-0 bg-white m-2 p-2 rounded-md">
                     <Download className="w-7 h-7" />
                   </div>
                 ) : (
@@ -92,7 +109,7 @@ const Gallery = () => {
                     <div>{img?.prompt}</div>
 
                     <div className="flex justify-end mt-2">
-                      <Download onClick={handleDownloadImageOffline} className="w-6 h-6 animate-bounce" />
+                      <Download onClick={() => handleDownloadImageOffline(img)} className="w-6 h-6 animate-bounce" />
                     </div>
                   </div>
                 )}
