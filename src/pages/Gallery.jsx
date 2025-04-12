@@ -26,32 +26,47 @@ const Gallery = () => {
   const [images, setImages] = useState([]); // allImages
 
   const [pagination, setPagination] = useState({
-    hasMoreImages: true,
     page: 1,
+    hasMoreImages: true,
+    totalImages: 0,
   });
 
   const isTouchDevice = useIsTouchDevice();
-  const [downloadProgress, setDownloadProgress] = useState(0);  // add this to toast message
-  
+  const [downloadProgress, setDownloadProgress] = useState(0); // add this to toast message
+
   const fetchGalleryImages = async () => {
     try {
       const response = await getSavedImagesApi(pagination.page);
 
       console.log(response); // log
 
-      setPagination((prev) => ({ ...prev, hasMoreImages: response.data.hasMoreImages }));
-      setImages((prev) => [...prev, ...response.data.images]);
+      const {
+        images = [],
+        hasMoreImages = false,
+        totalImages = 0,
+      } = response?.data || {};
 
+      if (!Array.isArray(images)) {
+        throw new Error("Invalid image data received from server.");
+      }
+
+      setPagination((prev) => ({
+        ...prev,
+        hasMoreImages,
+        totalImages,
+      }));
+
+      setImages((prev) => [...prev, ...images]);
     } catch (error) {
-      console.log("Error fetching images:", error.message); // log
+      console.error("Error fetching images:", error?.message || error); // log
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const loadMoreImages = () => {
     setPagination((prev) => ({ ...prev, page: prev.page + 1 }));
-  }
+  };
 
   useEffect(() => {
     if (!pagination.hasMoreImages) return;
@@ -76,10 +91,11 @@ const Gallery = () => {
 
   return (
     <section className="max-w-7xl mx-auto">
-      <h1 className="font-extrabold text-[#222328] text-[32px] mb-10">
+      <h1 className="font-extrabold text-black text-3xl mb-10">
         Your Gallery
       </h1>
 
+      {/* Images Grid */}
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 grid-cols-1 gap-3">
         {loading
           ? Array.from({ length: 12 }).map((_, index) => (
@@ -101,7 +117,10 @@ const Gallery = () => {
                 />
 
                 {isTouchDevice ? (
-                  <div onClick={() => handleDownloadImageOffline(img)} className="absolute bottom-0 right-0 bg-white m-2 p-2 rounded-md">
+                  <div
+                    onClick={() => handleDownloadImageOffline(img)}
+                    className="absolute bottom-0 right-0 bg-white m-2 p-2 rounded-md"
+                  >
                     <Download className="w-7 h-7" />
                   </div>
                 ) : (
@@ -109,17 +128,20 @@ const Gallery = () => {
                     <div>{img?.prompt}</div>
 
                     <div className="flex justify-end mt-2">
-                      <Download onClick={() => handleDownloadImageOffline(img)} className="w-6 h-6 animate-bounce" />
+                      <Download
+                        onClick={() => handleDownloadImageOffline(img)}
+                        className="w-6 h-6 animate-bounce"
+                      />
                     </div>
                   </div>
                 )}
-
               </div>
             ))}
       </div>
 
-      <div className={`mt-10 flex justify-center ${images.length ? "md:justify-end" : ""}`}>
-      {pagination.hasMoreImages ? (
+      {/* show 'load more' button, or end message, or empty gallery message */}
+      <div className={`mt-10 flex ${ pagination.totalImages ? "md:justify-end" : "justify-center" }`}>
+        {pagination.hasMoreImages ? (
           <button
             className="px-4 py-2 font-inter text-white rounded-md bg-custom-blue-3 hover:bg-custom-blue-4 shadow-lg shadow-slate-300 flex gap-2 transition duration-300"
             onClick={loadMoreImages}
@@ -128,11 +150,12 @@ const Gallery = () => {
           </button>
         ) : (
           <p className="text-gray-500 my-4 font-inter">
-            {images.length ? "🎉 You've reached the end!" : "Looks like your gallery is empty! Start uploading images to see them here. 🚀"}
+            {pagination.totalImages
+              ? "🎉 You've reached the end!"
+              : "Looks like your gallery is empty! Start uploading images to see them here. 🚀"}
           </p>
         )}
       </div>
-
     </section>
   );
 };
