@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { saveAs } from "file-saver";
 import { getSavedImagesApi } from "../api/image.api";
-import { Download, PlusCircle } from "lucide-react";
+import { Download, PlusCircle, PartyPopper, Rocket, CircleAlert, RotateCcw } from "lucide-react";
 
 // import { allImages } from "../constants/assets"; // temp
 
@@ -59,6 +59,12 @@ const Gallery = () => {
       setImages((prev) => [...prev, ...images]);
     } catch (error) {
       console.error("Error fetching images:", error?.message || error); // log
+      // also update error message here (context)
+      setPagination({
+        page: -1,
+        hasMoreImages: false,
+        totalImages: 0,
+      });
     } finally {
       setLoading(false);
     }
@@ -91,9 +97,7 @@ const Gallery = () => {
 
   return (
     <section className="max-w-7xl mx-auto">
-      <h1 className="font-extrabold text-black text-3xl mb-10">
-        Your Gallery
-      </h1>
+      <h1 className="font-extrabold text-black text-3xl mb-10">Your Gallery</h1>
 
       {/* Images Grid */}
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 grid-cols-1 gap-3">
@@ -140,20 +144,42 @@ const Gallery = () => {
       </div>
 
       {/* show 'load more' button, or end message, or empty gallery message */}
-      <div className={`mt-10 flex ${ pagination.totalImages ? "md:justify-end" : "justify-center" }`}>
+      <div className={`flex justify-center select-none ${ loading || pagination.totalImages ? "md:justify-end" : ""}`}>
         {pagination.hasMoreImages ? (
           <button
-            className="px-4 py-2 font-inter text-white rounded-md bg-custom-blue-3 hover:bg-custom-blue-4 shadow-lg shadow-slate-300 flex gap-2 transition duration-300"
+            className="mt-10 px-4 py-2 font-inter text-white rounded-md bg-custom-blue-3 hover:bg-custom-blue-4 shadow-lg shadow-slate-300 flex gap-2 transition duration-300"
             onClick={loadMoreImages}
           >
             <PlusCircle className="animate-pulse" /> Load more
           </button>
         ) : (
-          <p className="text-gray-500 my-4 font-inter">
-            {pagination.totalImages
-              ? "🎉 You've reached the end!"
-              : "Looks like your gallery is empty! Start uploading images to see them here. 🚀"}
-          </p>
+          <div className="my-4 font-inter flex items-center justify-center gap-3 font-medium text-gray-500">
+            {pagination.totalImages ? (
+              <>
+                <PartyPopper className="w-6 h-6 shrink-0" />
+                <span>You've reached the end!</span>
+              </>
+            ) : pagination.page === -1 ? (
+              <div className="text-red-500 flex sm:flex-row flex-col items-center justify-center gap-3">
+                <CircleAlert className="w-6 h-6 shrink-0 hidden sm:block" />
+                <div>Please check your internet connection or try again later.</div>
+                <button
+                  onClick={() => {
+                    setLoading(true);
+                    setPagination({ page: 1, hasMoreImages: true, totalImages: 0 });
+                  }}
+                  className="ml-2 mt-10 sm:mt-0 flex items-center gap-3 text-blue-600 underline hover:text-blue-800"
+                >
+                  Retry <RotateCcw className="w-4 h-4 mt-1 shrink-0"/>
+                </button>
+              </div>
+            ) : (
+              <>
+                <span>Looks like your gallery is empty! Start uploading images to see them here</span>
+                <Rocket className="w-6 h-6 shrink-0 text-gray-600 hidden sm:block" />
+              </>
+            )}
+          </div>
         )}
       </div>
     </section>
