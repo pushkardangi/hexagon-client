@@ -15,12 +15,18 @@ export default {
       },
       colors: {
         custom: {
-          "blue-1": "#AAB4FF",
-          "blue-2": "#929DFF",
-          "blue-3": "#7B85FF",
-          "blue-4": "#656EFF",
-        }
-      }
+          "blue-1": "#C2CCFF", // very light
+          "blue-2": "#A3ADFF", // light
+          "blue-3": "#858EFF", // medium-light
+          "blue-4": "#6770FF", // medium
+          "blue-5": "#4E5CF5", // medium-dark
+          "blue-6": "#3D4DEB", // darkest
+        },
+      },
+      // just add border color, not border
+      borderColor: {
+        "custom": "#e6ebf4", // border-custom
+      },
     },
   },
   plugins: [],
