@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Auth, Login, Register, ForgotPassword, Home, CreateImage, Gallery } from "./pages";
-import useAuth from "./hooks/useAuth"
+import useAuth from "./hooks/useAuth";
 import AppProviders from "./contexts/Provider";
 
 const ProtectedRoute = ({ children }) => {

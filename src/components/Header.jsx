@@ -28,8 +28,8 @@ const DropdownItem = ({
   textColor = "text-gray-700",
 }) => {
   return (
-    <Link to={href} className={`flex items-center px-4 py-2 text-sm hover:bg-gray-100 ${textColor} ${className}`}>
-      {Icon && <Icon className={`w-4 h-4 mr-3 ${iconColor}`} />}
+    <Link to={href} className={`flex items-center select-none px-4 py-2 text-sm hover:bg-gray-100 ${textColor} ${className}`}>
+      {Icon && <Icon className={`h-4 w-4 mr-3 ${iconColor}`} />}
       {label}
     </Link>
   );
@@ -54,10 +54,10 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-custom">
+    <header className="w-full flex justify-between items-center bg-white px-4 sm:px-8 py-4 border-b border-custom">
       <Link to="/" className="flex items-center">
-        <img src={logo || "/placeholder.svg"} alt="app logo" className="w-10 object-contain" />
-        <span className="font-inter font-medium text-xl ml-2">Hexagon</span>
+        <img src={logo || "/placeholder.svg"} alt="app logo" className="w-9 sm:w-10 object-contain" />
+        <span className="font-inter font-medium text-lg sm:text-xl ml-1 sm:ml-2">Hexagon</span>
       </Link>
 
       <div className="flex items-center gap-2">
@@ -65,17 +65,17 @@ const Header = () => {
         {location.pathname === "/gallery" ? (
           <Link
             to="/"
-            className="bg-custom-blue-3 hover:bg-custom-blue-2 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
+            className="border sm:border-0 border-custom sm:bg-custom-blue-3 sm:hover:bg-custom-blue-2 transition-colors text-gray-700 sm:text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-md flex items-center gap-2"
           >
-            <Pencil className="w-5 h-5" />
-            <span className="hidden sm:inline font-inter font-medium">Create</span>
+            <Pencil className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="text-sm sm:text-base font-inter font-medium">Create</span>
           </Link>
         ) : (
           <Link
             to="/gallery"
-            className="bg-custom-blue-3 hover:bg-custom-blue-2 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
+            className="border sm:border-0 border-custom sm:bg-custom-blue-3 sm:hover:bg-custom-blue-2 transition-colors text-gray-700 sm:text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-md flex items-center gap-2"
           >
-            <Images className="w-5 h-5" />
+            <Images className="h-4 w-4 sm:h-5 sm:w-5" />
             <span className="text-sm sm:text-base font-inter font-medium">Gallery</span>
           </Link>
         )}
@@ -84,11 +84,11 @@ const Header = () => {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="border border-custom hover:bg-gray-50 transition-colors text-gray-700 px-3 py-2 rounded-md flex items-center gap-2"
+            className="border border-custom sm:hover:bg-gray-50 transition-colors text-gray-700 sm:text-gray-500 px-2 py-1.5 rounded-md flex items-center gap-2"
             aria-expanded={isDropdownOpen}
             aria-haspopup="true"
           >
-            <Settings className="w-5 h-5" />
+            <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           <AnimatePresence>
