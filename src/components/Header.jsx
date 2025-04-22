@@ -68,7 +68,7 @@ const Header = () => {
             className="border sm:border-0 border-custom sm:bg-custom-blue-3 sm:hover:bg-custom-blue-2 transition-colors text-gray-700 sm:text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-md flex items-center gap-2"
           >
             <Pencil className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="text-sm sm:text-base font-inter font-medium">Create</span>
+            <span className="text-base font-inter font-medium">Create</span>
           </Link>
         ) : (
           <Link
@@ -76,7 +76,7 @@ const Header = () => {
             className="border sm:border-0 border-custom sm:bg-custom-blue-3 sm:hover:bg-custom-blue-2 transition-colors text-gray-700 sm:text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-md flex items-center gap-2"
           >
             <Images className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="text-sm sm:text-base font-inter font-medium">Gallery</span>
+            <span className="text-base font-inter font-medium">Gallery</span>
           </Link>
         )}
 
@@ -84,7 +84,7 @@ const Header = () => {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="border border-custom sm:hover:bg-gray-50 transition-colors text-gray-700 sm:text-gray-500 px-2 py-1.5 rounded-md flex items-center gap-2"
+            className="border border-custom sm:hover:bg-gray-50 transition-colors text-gray-700 sm:text-gray-500 px-2.5 py-2 rounded-md flex items-center gap-2"
             aria-expanded={isDropdownOpen}
             aria-haspopup="true"
           >
