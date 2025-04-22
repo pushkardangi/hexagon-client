@@ -26,6 +26,8 @@ export default {
       // just add border color, not border
       borderColor: {
         "custom": "#e6ebf4", // border-custom
+        "blue-2": "#A3ADFF", // light
+        "blue-3": "#858EFF", // medium-light
       },
     },
   },
