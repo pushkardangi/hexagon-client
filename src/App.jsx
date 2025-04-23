@@ -15,11 +15,11 @@ const App = () => {
       <Toaster
         position="bottom-left"
         reverseOrder={false}
-        // containerStyle={{
-        // bottom: 20,           // 20px from bottom
-        // left: 170,            // 170px from left
-        // position: "fixed",    // needed to keep toasts fixed on screen
-        // }}
+        toastOptions={{
+          style: {
+            fontSize: "0.9rem",
+          },
+        }}
       />
       <AppProviders>
         <Router>

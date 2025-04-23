@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
-import { Error, FormField, Loader, Radio } from "../components";
+import { FormField, Loader, Radio } from "../components";
 
 import { generateImageApi, uploadImageApi } from "../api/image.api.js";
 
@@ -21,7 +22,6 @@ const CreateImage = () => {
     status: null,
   });
 
-  const [message, setMessage] = useState(null);
   const [generatingImg, setGeneratingImg] = useState(false);
   const [savingImg, setSavingImg] = useState(false);
 
@@ -50,33 +50,29 @@ const CreateImage = () => {
       // Normal update for other fields
       setForm((prev) => ({ ...prev, [name]: value }));
     }
-
-    setMessage("");
   };
 
   // Generate a random prompt
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
     setForm((prev) => ({ ...prev, prompt: randomPrompt }));
-    setMessage("");
   };
 
   const handleGenerateImage = async () => {
     try {
       if (!form?.prompt) {
-        setMessage("Please enter a prompt");
+        toast.error("Please enter a prompt");
         return;
       }
 
       setGeneratingImg(true);
       setImage((prev) => ({ ...prev, imageUrl: preview }));
-      setMessage("");
       setForm((prev) => ({ ...prev, prompt: prev.prompt.trim() }));
 
       const response = await generateImageApi(form);
 
       if (response?.error) {
-        setMessage(response.error);
+        toast.error(response.error);
         setGeneratingImg(false);
         return;
       }
@@ -84,7 +80,7 @@ const CreateImage = () => {
       const { imageId, imageUrl } = response.data;
 
       if (!imageId || !imageUrl) {
-        setMessage("Unexpected error: No image received");
+        toast.error("Failed to generate image. Please try again.");
         setGeneratingImg(false);
         return;
       }
@@ -93,8 +89,8 @@ const CreateImage = () => {
 
       // Not setting generatingImg (false) here - image onLoad/onError handles it
     } catch (error) {
-      console.error("Error generating image:", error);
-      setMessage(error.message);
+      toast.error(error?.message);
+      console.error("Error while generating image:", error);
       setGeneratingImg(false);
     }
   };
@@ -102,25 +98,24 @@ const CreateImage = () => {
   const handleSaveImage = async () => {
     try {
       setSavingImg(true);
-      setMessage("");
 
       if (!image) {
-        setMessage("No image data available");
+        toast.error("No image data available");
         return;
       }
 
       if (image.status === "saved") {
-        setMessage("Image is already saved");
+        toast.error("Image is already saved");
         return;
       }
 
       if (!image.imageId?.trim()) {
-        setMessage("Image ID is required");
+        toast.error("Image ID is required");
         return;
       }
 
       if (!image.imageUrl?.trim()) {
-        setMessage("Image URL is required");
+        toast.error("Image URL is required");
         return;
       }
 
@@ -129,15 +124,15 @@ const CreateImage = () => {
       const response = await uploadImageApi(apiPayload);
 
       if (response?.error) {
-        setMessage(response.error);
+        toast.error(response.error);
         return;
       }
 
       setImage((prev) => ({ ...prev, status: "saved" }));
-      setMessage("Image saved successfully");
+      toast.success("Image saved to gallery", { duration: 4000 });
     } catch (error) {
-      console.error("Error saving image:", error);
-      setMessage(error.message || "Something went wrong while saving image");
+      toast.error(error?.message || "Something went wrong while saving image");
+      console.error("Error while saving image:", error);
     } finally {
       setSavingImg(false);
     }
@@ -155,7 +150,7 @@ const CreateImage = () => {
 
       img.onerror = () => {
         setGeneratingImg(false);
-        setMessage("Failed to load generated image");
+        toast.error("Failed to load generated image");
       };
     }
   }, [image.imageUrl]);
@@ -163,8 +158,8 @@ const CreateImage = () => {
   return (
     <section className="max-w-7xl mx-auto">
       <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
-        <p className="mt-2 text-[#666e75] text-[14px]">
+        <h1 className="font-extrabold text-black text-4xl">Create</h1>
+        <p className="mt-2 text-gray-600 text-sm">
           Bring your ideas to life! Generate stunning AI images with DALL-E and use them instantly.
         </p>
       </div>
@@ -283,9 +278,8 @@ const CreateImage = () => {
           >
             {savingImg ? "Saving . . ." : "Save to Gallery"}
           </button>
-
-          <Error error={message} />
         </div>
+
       </form>
     </section>
   );
