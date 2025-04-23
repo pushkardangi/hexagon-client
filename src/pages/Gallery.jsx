@@ -115,7 +115,7 @@ const Gallery = () => {
               >
                 <img
                   src={getThumbnailUrl(img?.image)}
-                  alt={img.prompt}
+                  alt={img?.prompt}
                   className={`w-full h-full object-cover aspect-square`}
                   loading="lazy"
                 />
@@ -129,9 +129,9 @@ const Gallery = () => {
                   </div>
                 ) : (
                   <div className="absolute bottom-0 inset-x-0 rounded-md m-2 p-2 bg-white opacity-0 group-hover:opacity-80 transition-opacity duration-300 flex flex-col">
-                    <div>{img?.prompt}</div>
+                    <div className="line-clamp-3">{img?.prompt}</div>
 
-                    <div className="flex justify-end mt-2">
+                    <div className="flex justify-end mt-3">
                       <Download
                         onClick={() => handleDownloadImageOffline(img)}
                         className="w-6 h-6 animate-bounce"
