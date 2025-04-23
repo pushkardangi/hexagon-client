@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Auth, Login, Register, ForgotPassword, Home, CreateImage, Gallery } from "./pages";
 import useAuth from "./hooks/useAuth";
 import AppProviders from "./contexts/Provider";
+import { Toaster } from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -10,26 +11,37 @@ const ProtectedRoute = ({ children }) => {
 
 const App = () => {
   return (
-    <AppProviders>
-      <Router>
-        <Routes>
-          {/* Protected Routes */}
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
-            <Route index element={<CreateImage />} />
-            <Route path="gallery" element={<Gallery />} />
-          </Route>
+    <>
+      <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+        // containerStyle={{
+        // bottom: 20,           // 20px from bottom
+        // left: 170,            // 170px from left
+        // position: "fixed",    // needed to keep toasts fixed on screen
+        // }}
+      />
+      <AppProviders>
+        <Router>
+          <Routes>
+            {/* Protected Routes */}
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
+              <Route index element={<CreateImage />} />
+              <Route path="gallery" element={<Gallery />} />
+            </Route>
 
-          {/* Auth Routes */}
-          <Route path="/auth/*" element={<Auth />}>
-            <Route index path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-          </Route>
+            {/* Auth Routes */}
+            <Route path="/auth/*" element={<Auth />}>
+              <Route index path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+            </Route>
 
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
-    </AppProviders>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Router>
+      </AppProviders>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import { saveAs } from "file-saver";
 import { getSavedImagesApi } from "../api/image.api";
 import { Download, PlusCircle, PartyPopper, Rocket, CircleAlert, RotateCcw } from "lucide-react";
+import toast from 'react-hot-toast';
 
 // import { allImages } from "../constants/assets"; // temp
 
@@ -32,7 +33,6 @@ const Gallery = () => {
   });
 
   const isTouchDevice = useIsTouchDevice();
-  const [downloadProgress, setDownloadProgress] = useState(0); // add this to toast message
 
   const fetchGalleryImages = async () => {
     try {
@@ -47,7 +47,7 @@ const Gallery = () => {
       } = response?.data || {};
 
       if (!Array.isArray(images)) {
-        throw new Error("Invalid image data received from server.");
+        toast.error("Unexpected response from the server!");
       }
 
       setPagination((prev) => ({
@@ -58,8 +58,8 @@ const Gallery = () => {
 
       setImages((prev) => [...prev, ...images]);
     } catch (error) {
-      console.error("Error fetching images:", error?.message || error); // log
-      // also update error message here (context)
+      toast.error("Failed to fetch images!");
+      console.error("Error while fetching images:", error);
       setPagination({
         page: -1,
         hasMoreImages: false,
@@ -80,18 +80,28 @@ const Gallery = () => {
   }, [pagination.page]);
 
   const handleDownloadImageOffline = async ({ image, prompt }) => {
+    const toastId = toast.loading("Starting download...");
+  
     try {
       const response = await axios.get(image, {
         responseType: "blob",
         onDownloadProgress: (progressEvent) => {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setDownloadProgress(percentCompleted);
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+  
+          toast.loading(`Download progress: ${percentCompleted}%`, {
+            id: toastId,
+          });
         },
       });
-
+  
       saveAs(response.data, `Hexagon - ${prompt}.png`);
+  
+      toast.success("Download complete!", { id: toastId });
     } catch (error) {
-      console.alert("Error downloading the image:", error, "\nPlease try again.");
+      toast.error("Download failed. Please try again.", { id: toastId });
+      console.error("Error while downloading the image:", error);
     }
   };
 
