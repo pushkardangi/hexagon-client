@@ -18,6 +18,7 @@ const App = () => {
         toastOptions={{
           style: {
             fontSize: "0.9rem",
+            maxWidth: "100%",
           },
         }}
       />
