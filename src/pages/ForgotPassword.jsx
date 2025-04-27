@@ -1,22 +1,32 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { InputField } from "../components";
+import { LoaderCircle } from "lucide-react";
 import toast from "react-hot-toast";
+
+import { InputField } from "../components";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Link sent to:", email);
-    toast.success("Link has been sent to your email! Check your inbox", {
-      duration: 4000,
-    });
+
+    setLoading(true);
+
+    // Simulating API call
+    setTimeout(() => {
+      console.log("Magic link sent to:", email);
+      toast.success("Link has been sent to your email! Check your inbox", {
+        duration: 4000,
+      });
+      setLoading(false);
+    }, 3000);
   };
 
   const handleChange = (e) => {
     setEmail(e.target.value);
-  }
+  };
 
   return (
     <div className="h-dvh w-full flex items-center justify-center bg-white">
@@ -43,22 +53,27 @@ const ForgotPassword = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition text-sm font-semibold disabled:opacity-70"
-            disabled={!email}
+            className={`w-full text-white py-3 rounded-md bg-blue-600 hover:bg-blue-700 disabled:hover:bg-blue-600 transition disabled:opacity-70`}
+            disabled={!email || loading}
           >
-            Send Login Link
+            {loading ? (
+              <div className="flex justify-center gap-3">
+                <LoaderCircle className="animate-spin" />
+                Sending Login Link . . .
+              </div>
+            ) : (
+              "Send Login Link"
+            )}
           </button>
         </form>
 
         {/* Footer */}
         <div className="mt-6 text-center">
-          <Link
-            to="/auth/login"
-            className="text-blue-600 hover:underline text-sm"
-          >
+          <Link to="/auth/login" className="text-blue-600 hover:underline text-sm">
             Back to Login
           </Link>
         </div>
+
       </div>
     </div>
   );
