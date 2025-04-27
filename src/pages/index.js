@@ -5,6 +5,7 @@ import Gallery from "./Gallery";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
+import TermsAndConditions from "./TermsAndConditions";
 
 export {
     Auth,
@@ -13,5 +14,6 @@ export {
     Gallery,
     Home,
     Login,
-    Register
+    Register,
+    TermsAndConditions,
 };
