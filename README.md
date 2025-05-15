@@ -1,4 +1,4 @@
-# Hexagon | where prompts become pixels
+# Hexagon | where prompts become pixels &nbsp;&nbsp;&nbsp;&nbsp; [![View Project](https://img.shields.io/badge/view_project-1e394e?style=for-the-badge&logo=&logoColor=white)](https://hexagon.pushkarweb.dev)
 
 A simple, fast, and reliable tool to transform your ideas into images using OpenAI's DALL·E models. Built with modern frontend tooling and designed for easy contribution.
 
