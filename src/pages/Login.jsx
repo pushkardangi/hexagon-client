@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import { InputField } from "../components";
 import { loginUser } from "../api/auth.api";
-import useAuth from "../hooks/useAuth";
+import { useAuthStore } from "../store";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -14,6 +14,8 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const login = useAuthStore((state) => state.login);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -24,7 +26,6 @@ const Login = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -55,7 +56,7 @@ const Login = () => {
         return;
       }
 
-      // update the context value
+      // update store value
       login(response.data);
 
       navigate("/");

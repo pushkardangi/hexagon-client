@@ -19,26 +19,21 @@ import {
   WandSparkles,
 } from "lucide-react";
 
-const DropdownItem = ({
-  href = "/",
-  icon: Icon,
-  label,
-  className = "",
-  iconColor = "text-gray-500",
-  textColor = "text-gray-700",
-}) => {
-  return (
-    <Link to={href} className={`flex items-center select-none px-4 py-2 text-sm hover:bg-gray-100 ${textColor} ${className}`}>
-      {Icon && <Icon className={`h-4 w-4 mr-3 ${iconColor}`} />}
-      {label}
-    </Link>
-  );
-};
+import { useAuthStore } from "../store";
+import { DropdownItem } from "./ui";
 
 const Header = () => {
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    logout();
+    setIsDropdownOpen(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -104,11 +99,13 @@ const Header = () => {
                 <div className="px-4 py-3 border-b border-custom">
                   <div className="flex items-center">
                     <div className="w-10 h-10 rounded-full bg-custom-blue-4 flex items-center justify-center text-white">
-                      <User className="w-5 h-5" />
+                      {user?.avatar ? <img src={user.avatar} alt="user profile" /> : <User className="w-5 h-5" />}
                     </div>
                     <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">User Name</p>
-                      <p className="text-xs text-gray-500">user@example.com</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {user?.firstName || "User"} {user?.lastName || ""}
+                      </p>
+                      <p className="text-xs text-gray-500">{user?.email || "user@example.com"}</p>
                     </div>
                   </div>
                 </div>
@@ -186,9 +183,9 @@ const Header = () => {
 
                 <div className="border-t border-custom py-1">
                   <DropdownItem
-                    href="/"
                     icon={LogOut}
-                    label="Sign out"
+                    label="Log out"
+                    onClick={handleLogout}
                     textColor="text-red-600"
                     iconColor="text-red-500"
                   />
