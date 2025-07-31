@@ -11,6 +11,7 @@ const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 const Home = lazy(() => import("./pages/Home"));
 const CreateImage = lazy(() => import("./pages/CreateImage"));
 const Gallery = lazy(() => import("./pages/Gallery"));
+const BillingOptions = lazy(() => import("./pages/BillingOptions"));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -35,9 +36,17 @@ const App = () => {
         <Suspense fallback={<div className="p-4 text-center text-gray-500">Loading...</div>}>
           <Routes>
             {/* Protected Routes */}
-            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<CreateImage />} />
               <Route path="gallery" element={<Gallery />} />
+              <Route path="billing" element={<BillingOptions />} />
             </Route>
 
             {/* Auth Routes */}

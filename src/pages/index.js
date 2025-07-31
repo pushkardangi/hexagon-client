@@ -6,14 +6,16 @@ import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import TermsAndConditions from "./TermsAndConditions";
+import BillingOptions from "./BillingOptions";
 
 export {
-    Auth,
-    CreateImage,
-    ForgotPassword,
-    Gallery,
-    Home,
-    Login,
-    Register,
-    TermsAndConditions,
+  Auth,
+  CreateImage,
+  ForgotPassword,
+  Gallery,
+  Home,
+  Login,
+  Register,
+  TermsAndConditions,
+  BillingOptions,
 };

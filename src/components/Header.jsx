@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { logo } from "../assets";
@@ -24,6 +24,7 @@ import { DropdownItem } from "./ui";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -33,6 +34,11 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     setIsDropdownOpen(false);
+  };
+
+  const closeAndNavigate = (href) => {
+    setIsDropdownOpen(false);
+    navigate(href);
   };
 
   useEffect(() => {
@@ -111,68 +117,24 @@ const Header = () => {
                 </div>
 
                 <div>
-                  <DropdownItem
-                    href="/"
-                    icon={User}
-                    label="Your Profile"
-                    textColor="text-gray-300" // temporarily disabled
-                    iconColor="text-gray-300" // features under development
-                  />
-                  <DropdownItem
-                    href="/"
-                    icon={History}
-                    label="History"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
-                  />
-                  <DropdownItem
-                    href="/"
-                    icon={Trash2}
-                    label="Trash"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
-                  />
+                  <DropdownItem href="/" icon={User} label="Your Profile" disabled />
+                  <DropdownItem href="/" icon={History} label="History" disabled />
+                  <DropdownItem href="/" icon={Trash2} label="Trash" disabled />
                 </div>
 
                 <div className="border-t border-custom">
+                  <DropdownItem href="/" icon={HelpCircle} label="Help & Support" disabled />
+                  <DropdownItem href="/" icon={Settings} label="Account Settings" disabled />
                   <DropdownItem
-                    href="/"
-                    icon={HelpCircle}
-                    label="Help & Support"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
-                  />
-                  <DropdownItem
-                    href="/"
-                    icon={Settings}
-                    label="Account Settings"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
-                  />
-                  <DropdownItem
-                    href="/"
                     icon={CreditCard}
                     label="Billing & Subscriptions"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
+                    onClick={() => closeAndNavigate("/billing")}
                   />
                 </div>
 
                 <div className="border-t border-custom">
-                  <DropdownItem
-                    href="/"
-                    icon={BookOpen}
-                    label="Documentation"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
-                  />
-                  <DropdownItem
-                    href="/"
-                    icon={WandSparkles}
-                    label="Pro Tips"
-                    textColor="text-gray-300"
-                    iconColor="text-gray-300"
-                  />
+                  <DropdownItem href="/" icon={BookOpen} label="Documentation" disabled />
+                  <DropdownItem href="/" icon={WandSparkles} label="Pro Tips" disabled />
                 </div>
 
                 <div className="border-t border-custom">
