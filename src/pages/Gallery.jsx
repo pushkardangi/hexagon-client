@@ -38,8 +38,6 @@ const Gallery = () => {
     try {
       const response = await getSavedImagesApi(pagination.page);
 
-      console.log(response); // log
-
       const {
         images = [],
         hasMoreImages = false,

@@ -1,7 +1,16 @@
+import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { Auth, Login, Register, ForgotPassword, Home, CreateImage, Gallery, TermsAndConditions } from "./pages";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store";
+
+const Auth = lazy(() => import("./pages/Auth"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const Home = lazy(() => import("./pages/Home"));
+const CreateImage = lazy(() => import("./pages/CreateImage"));
+const Gallery = lazy(() => import("./pages/Gallery"));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -21,24 +30,27 @@ const App = () => {
           },
         }}
       />
+
       <Router>
-        <Routes>
-          {/* Protected Routes */}
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
-            <Route index element={<CreateImage />} />
-            <Route path="gallery" element={<Gallery />} />
-          </Route>
+        <Suspense fallback={<div className="p-4 text-center text-gray-500">Loading...</div>}>
+          <Routes>
+            {/* Protected Routes */}
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}>
+              <Route index element={<CreateImage />} />
+              <Route path="gallery" element={<Gallery />} />
+            </Route>
 
-          {/* Auth Routes */}
-          <Route path="/auth/*" element={<Auth />}>
-            <Route index path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-          </Route>
+            {/* Auth Routes */}
+            <Route path="/auth/*" element={<Auth />}>
+              <Route index path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+            </Route>
 
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Suspense>
       </Router>
     </>
   );
