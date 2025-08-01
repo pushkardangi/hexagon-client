@@ -6,14 +6,19 @@ import Header from "./Header";
 import Loader from "./Loader";
 import Radio from "./Radio";
 import InputField from "./InputField";
+import FeatureItem from "./FeatureItem";
+import BillingContainer from "./BillingOptions/BillingContainer";
+
 
 export {
-    Card,
-    Carousel,
-    Error,
-    FormField,
-    Header,
-    InputField,
-    Loader,
-    Radio,
+  Card,
+  Carousel,
+  Error,
+  FormField,
+  Header,
+  InputField,
+  Loader,
+  Radio,
+  FeatureItem,
+  BillingContainer,
 };
