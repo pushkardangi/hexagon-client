@@ -16,25 +16,18 @@ const RedeemCodeCard = () => {
       return;
     }
 
-    console.log("RedeemCode:", redeemCode);
-
     setIsLoading(true);
 
-    try {
-      const res = await redeemTheCode({ code });
-      console.log("Res for code:", res);
+    const { data, success, error } = await redeemTheCode(code);
 
-      if (res?.error) {
-        toast.error(res.error);
-      } else {
-        toast.success("Credits added successfully!");
-      }
-    } catch (err) {
-      toast.error("Invalid or expired code.");
-    } finally {
-      setRedeemCode("");
-      setIsLoading(false);
+    if (data && success) {
+      toast.success(`${data.creditsAdded} Credits added to your account`);
+    } else if (error) {
+      toast.error(error);
     }
+
+    setRedeemCode("");
+    setIsLoading(false);
   };
 
   return (
