@@ -11,21 +11,23 @@ export const handleApiError = async (error) => {
     const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";
     const status = error?.response?.status;
 
-    console.log("Error occured :", status, errorMessage); // Log
+    console.error(`[${error.config?.method?.toUpperCase()}] ${error.config?.url}`, status, errorMessage);
 
-    // when Access token expired, get new access token and prompt user to try again
-    if (status === 401 && (errorMessage === "Access Token Expired!" || errorMessage === "Unauthorized! Access token is missing!")) {
+    // If access token expired or missing → renew token but don't retry request
+    if (
+      status === 401 &&
+      (errorMessage === "Access Token Expired!" || errorMessage === "Unauthorized! Access token is missing!")
+    ) {
       try {
         await renewTokens();
-        const result = axiosInstance(error?.config); // retry the original request
-        return result;
+        return { data: null, error: "Token renewed. Please try the request again." };
       } catch (tokenError) {
-        return { error: `Session expired. Please log in again: ${tokenError}` };
+        return { data: null, error: `Session expired. Please log in again: ${tokenError.message}` };
       }
     }
 
-    return { error: errorMessage };
+    return { data: null, error: errorMessage };
   } catch (err) {
-    throw new Error(`An unexpected err occurred : ${err}`);
+    return { data: null, error: `An unexpected error occurred: ${err.message}` };
   }
 };

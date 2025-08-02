@@ -24,11 +24,19 @@ export const uploadImageApi = async (data) => {
 };
 
 export const getSavedImagesApi = async (page = 1, limit = 12) => {
-  const response = await axiosInstance.get(`/images/saved?page=${page}&limit=${limit}`);
-  return response.data;
+  try {
+    const response = await axiosInstance.get(`/images/saved?page=${page}&limit=${limit}`);
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
 };
 
 export const trashImagesApi = async (imageIds) => {
-  const response = await axiosInstance.patch("/images/trash", { images: imageIds });
-  return response.data;
+  try {
+    const response = await axiosInstance.patch("/images/trash", { images: imageIds });
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
 };

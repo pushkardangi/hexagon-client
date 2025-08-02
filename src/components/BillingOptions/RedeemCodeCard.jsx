@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Gift } from "lucide-react";
 import toast from "react-hot-toast";
 import FeatureItem from "../FeatureItem";
+import { redeemTheCode } from "../../api";
 
 const RedeemCodeCard = () => {
   const [redeemCode, setRedeemCode] = useState("");
@@ -20,14 +21,18 @@ const RedeemCodeCard = () => {
     setIsLoading(true);
 
     try {
-      // 🔁 Replace with real API call
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      const res = await redeemTheCode({ code });
+      console.log("Res for code:", res);
 
-      toast.success("Credits added successfully!");
-      setRedeemCode("");
+      if (res?.error) {
+        toast.error(res.error);
+      } else {
+        toast.success("Credits added successfully!");
+      }
     } catch (err) {
       toast.error("Invalid or expired code.");
     } finally {
+      setRedeemCode("");
       setIsLoading(false);
     }
   };
