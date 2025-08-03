@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { logo } from "../assets";
@@ -24,7 +24,6 @@ import { DropdownItem } from "./ui";
 
 const Header = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -34,11 +33,6 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     setIsDropdownOpen(false);
-  };
-
-  const closeAndNavigate = (href) => {
-    setIsDropdownOpen(false);
-    navigate(href);
   };
 
   useEffect(() => {
@@ -96,6 +90,7 @@ const Header = () => {
             {isDropdownOpen && (
               <motion.div
                 key="dropdown"
+                onClick={() => setIsDropdownOpen(false)}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
@@ -117,7 +112,7 @@ const Header = () => {
                 </div>
 
                 <div>
-                  <DropdownItem href="/" icon={User} label="Your Profile" disabled />
+                  <DropdownItem href="/profile" icon={User} label="Your Profile" />
                   <DropdownItem href="/" icon={History} label="History" disabled />
                   <DropdownItem href="/" icon={Trash2} label="Trash" disabled />
                 </div>
@@ -125,11 +120,7 @@ const Header = () => {
                 <div className="border-t border-custom">
                   <DropdownItem href="/" icon={HelpCircle} label="Help & Support" disabled />
                   <DropdownItem href="/" icon={Settings} label="Account Settings" disabled />
-                  <DropdownItem
-                    icon={CreditCard}
-                    label="Billing & Subscriptions"
-                    onClick={() => closeAndNavigate("/billing")}
-                  />
+                  <DropdownItem href="/billing" icon={CreditCard} label="Billing & Subscriptions" />
                 </div>
 
                 <div className="border-t border-custom">

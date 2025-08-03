@@ -12,6 +12,7 @@ const Home = lazy(() => import("./pages/Home"));
 const CreateImage = lazy(() => import("./pages/CreateImage"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const BillingOptions = lazy(() => import("./pages/BillingOptions"));
+const UserProfile = lazy(() => import("./components/Profile/ProfileContainer"));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -47,6 +48,7 @@ const App = () => {
             >
               <Route index element={<CreateImage />} />
               <Route path="gallery" element={<Gallery />} />
+              <Route path="profile" element={<UserProfile />} />
               <Route path="billing" element={<BillingOptions />} />
             </Route>
 
