@@ -12,7 +12,7 @@ const ProfileHeader = () => {
       {isAdmin && (
         <div className="px-2">
           <Link
-            to="/admin/dashboard"
+            to="/admin"
             className="px-2 py-1 text-sm bg-gray-500 hover:bg-gray-400 text-white rounded-md transition-colors"
           >
             Admin

@@ -3,16 +3,21 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store";
 
-const Auth = lazy(() => import("./pages/Auth"));
+const Auth = lazy(() => import("./layouts/Auth"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
-const Home = lazy(() => import("./pages/Home"));
+
+const Home = lazy(() => import("./layouts/Home"));
 const CreateImage = lazy(() => import("./pages/CreateImage"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const BillingOptions = lazy(() => import("./pages/BillingOptions"));
 const UserProfile = lazy(() => import("./components/Profile/ProfileContainer"));
+
+const AdminLayout = lazy(() => import("./layouts/Admin"));
+const UserManagement = lazy(() => import("./pages/admin/user/UserManagement"));
+const RedeemCodeManagement = lazy(() => import("./pages/admin/redeem-code/RedeemCodeManagement"));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -60,6 +65,11 @@ const App = () => {
 
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="users" element={<UserManagement />} />
+              <Route path="redeem-codes" element={<RedeemCodeManagement />} />
+            </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>
