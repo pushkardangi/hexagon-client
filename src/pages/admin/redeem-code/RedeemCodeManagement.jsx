@@ -8,7 +8,6 @@ import { formatDate, formatDateTime } from "../../../utils";
 const RedeemCodeManagement = () => {
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("");
-  const [loading, setLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showBulkModal, setShowBulkModal] = useState(false);
@@ -64,7 +63,7 @@ const RedeemCodeManagement = () => {
         </div>
       </div>
 
-      {loading ? (
+      {isLoading ? (
         <p>Loading codes...</p>
       ) : (
         <table className="w-full border-collapse border border-gray-300">
