@@ -1,3 +1,4 @@
 import getRandomPrompt from "./getRandomPrompt";
+import { formatDate, formatDateTime } from "./dateFormatter";
 
-export { getRandomPrompt };
+export { getRandomPrompt, formatDate, formatDateTime };

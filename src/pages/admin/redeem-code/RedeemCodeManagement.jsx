@@ -3,6 +3,7 @@ import useSWR from "swr";
 import CreateCodeModal from "./CreateCodeModal";
 import GenerateBulkModal from "./GenerateBulkModal";
 import { fetchBulkRedeemCodes } from "../../../api";
+import { formatDate, formatDateTime } from "../../../utils";
 
 const RedeemCodeManagement = () => {
   const [filter, setFilter] = useState("all");
@@ -99,12 +100,10 @@ const RedeemCodeManagement = () => {
                 </td>
                 <td className="p-2 border">{code.code}</td>
                 <td className="p-2 border">{code.credits}</td>
-                <td className="p-2 border">
-                  {code.expiresAt ? new Date(code.expiresAt).toLocaleDateString() : "No Expiry"}
-                </td>
+                <td className="p-2 border">{formatDate(code.expiresAt)}</td>
                 <td className="p-2 border">{code.isUsed ? "Yes" : "No"}</td>
                 <td className="p-2 border">{code.usedBy || "-"}</td>
-                <td className="p-2 border">{code.usedAt ? new Date(code.usedAt).toLocaleString() : "-"}</td>
+                <td className="p-2 border">{formatDateTime(code.usedAt)}</td>
               </tr>
             ))}
           </tbody>
@@ -112,8 +111,8 @@ const RedeemCodeManagement = () => {
       )}
 
       {/* Modals */}
-      {showCreateModal && <CreateCodeModal onClose={() => setShowCreateModal(false)} onSuccess={fetchCodes} />}
-      {showBulkModal && <GenerateBulkModal onClose={() => setShowBulkModal(false)} onSuccess={fetchCodes} />}
+      {showCreateModal && <CreateCodeModal onClose={() => setShowCreateModal(false)} onSuccess={mutate} />}
+      {showBulkModal && <GenerateBulkModal onClose={() => setShowBulkModal(false)} onSuccess={mutate} />}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useSWR from "swr";
-import { axiosInstance } from "../../../api/axiosInstance";
+import { createRedeemCode } from "../../../api";
+import toast from "react-hot-toast";
 
 const CreateCodeModal = ({ onClose, onSuccess }) => {
   const [code, setCode] = useState("");
@@ -18,18 +18,23 @@ const CreateCodeModal = ({ onClose, onSuccess }) => {
 
     setLoading(true);
     try {
-      await axiosInstance.post("/admin/redeem-code", {
-        code: code.trim(),
-        credits: Number(credits),
-        expiresAt,
-      });
-      onSuccess();
-      onClose();
+      const payload = {
+        code: code.trim(), // string
+        credits: Number(credits), // number
+        expiresAt, // date as 2025-12-31
+      };
+      const response = await createRedeemCode(payload);
+
+      if (response.statusCode === 201) {
+        toast.success(response.message);
+        onSuccess();
+      }
     } catch (error) {
       console.error("Error creating code:", error);
       alert(error?.response?.data?.message || "Failed to create redeem code");
     } finally {
       setLoading(false);
+      onClose();
     }
   };
 
