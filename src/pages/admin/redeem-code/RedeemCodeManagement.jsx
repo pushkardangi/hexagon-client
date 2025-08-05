@@ -24,10 +24,11 @@ const RedeemCodeManagement = () => {
     }
   );
 
-  const codes = data?.data || []; // Ensure it's always an array
+  const codes = data?.data || [];
 
-  console.log("codess:", codes);
-  console.log("error:", error);
+  if (error) {
+    console.error("Error while fetching redeem code data:", error);
+  }
 
   const deleteBulk = () => {};
 
