@@ -2,15 +2,17 @@ import { useState } from "react";
 import useSWR from "swr";
 import CreateCodeModal from "./CreateCodeModal";
 import GenerateBulkModal from "./GenerateBulkModal";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { fetchBulkRedeemCodes } from "../../../api";
 import { formatDate, formatDateTime } from "../../../utils";
 
 const RedeemCodeManagement = () => {
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("");
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedCodes, setSelectedCodes] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showBulkModal, setShowBulkModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { data, error, isLoading, mutate } = useSWR(
     ["bulk-redeem-codes", filter, sort],
@@ -28,8 +30,6 @@ const RedeemCodeManagement = () => {
   if (error) {
     console.error("Error while fetching redeem code data:", error);
   }
-
-  const deleteBulk = () => {};
 
   return (
     <div>
@@ -57,7 +57,7 @@ const RedeemCodeManagement = () => {
           <button onClick={() => setShowBulkModal(true)} className="px-3 py-1 bg-green-500 text-white rounded">
             Generate Bulk
           </button>
-          <button onClick={deleteBulk} className="px-3 py-1 bg-red-500 text-white rounded">
+          <button onClick={() => setShowDeleteModal(true)} className="px-3 py-1 bg-red-500 text-white rounded">
             Delete Selected
           </button>
         </div>
@@ -72,8 +72,8 @@ const RedeemCodeManagement = () => {
               <th className="p-2 border">
                 <input
                   type="checkbox"
-                  checked={selectedIds?.length === codes.length && codes.length > 0}
-                  onChange={(e) => setSelectedIds(e.target.checked ? codes.map((c) => c._id) : [])}
+                  checked={selectedCodes?.length === codes.length && codes.length > 0}
+                  onChange={(e) => setSelectedCodes(e.target.checked ? codes.map((c) => c._id) : [])}
                 />
               </th>
               <th className="p-2 border">Code</th>
@@ -90,9 +90,9 @@ const RedeemCodeManagement = () => {
                 <td className="p-2 border">
                   <input
                     type="checkbox"
-                    checked={selectedIds.includes(code._id)}
+                    checked={selectedCodes.includes(code._id)}
                     onChange={(e) =>
-                      setSelectedIds((prev) =>
+                      setSelectedCodes((prev) =>
                         e.target.checked ? [...prev, code._id] : prev.filter((id) => id !== code._id)
                       )
                     }
@@ -113,6 +113,16 @@ const RedeemCodeManagement = () => {
       {/* Modals */}
       {showCreateModal && <CreateCodeModal onClose={() => setShowCreateModal(false)} onSuccess={mutate} />}
       {showBulkModal && <GenerateBulkModal onClose={() => setShowBulkModal(false)} onSuccess={mutate} />}
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          selectedCodes={selectedCodes}
+          onClose={() => setShowDeleteModal(false)}
+          onSuccess={() => {
+            mutate();
+            setSelectedCodes([]);
+          }}
+        />
+      )}
     </div>
   );
 };
