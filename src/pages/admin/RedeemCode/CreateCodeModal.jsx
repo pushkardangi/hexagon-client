@@ -49,7 +49,7 @@ const CreateCodeModal = ({ onClose, onSuccess }) => {
             <input
               type="text"
               value={code}
-              onChange={(e) => setCode(e.target.value)}
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
               className="w-full border rounded px-3 py-2"
               placeholder="Enter code"
             />

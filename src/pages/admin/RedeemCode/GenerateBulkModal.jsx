@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { axiosInstance } from "../../../api/axiosInstance";
+import toast from "react-hot-toast";
+import { generateBulkRedeemCodes } from "../../../api";
 
 const GenerateBulkModal = ({ onClose, onSuccess }) => {
   const [baseCode, setBaseCode] = useState("");
@@ -17,20 +18,25 @@ const GenerateBulkModal = ({ onClose, onSuccess }) => {
     }
 
     setLoading(true);
+    const payload = {
+      baseCode: baseCode.trim(),
+      count: Number(count),
+      credits: Number(credits),
+      expiresAt,
+    };
     try {
-      await axiosInstance.post("/admin/redeem-codes/generate-bulk", {
-        baseCode: baseCode.trim(),
-        count: Number(count),
-        credits: Number(credits),
-        expiresAt,
-      });
-      onSuccess();
-      onClose();
+      const response = await generateBulkRedeemCodes(payload);
+
+      if (response.success) {
+        toast.success(response.message || "Bulk Codes created successfully");
+        onSuccess();
+      }
     } catch (error) {
       console.error("Error generating bulk codes:", error);
-      alert(error?.response?.data?.message || "Failed to generate bulk redeem codes");
+      toast.error(error?.response?.data?.message || "Failed to generate bulk redeem codes");
     } finally {
       setLoading(false);
+      onClose();
     }
   };
 
@@ -45,7 +51,7 @@ const GenerateBulkModal = ({ onClose, onSuccess }) => {
             <input
               type="text"
               value={baseCode}
-              onChange={(e) => setBaseCode(e.target.value)}
+              onChange={(e) => setBaseCode(e.target.value.toUpperCase())}
               className="w-full border rounded px-3 py-2"
               placeholder="Enter base code (e.g., SUMMER2025)"
             />
