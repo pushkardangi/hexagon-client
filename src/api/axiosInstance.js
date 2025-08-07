@@ -11,7 +11,7 @@ export const handleApiError = async (error) => {
     const errorMessage = error?.response?.data?.message || "An unexpected error occurred.";
     const status = error?.response?.status;
 
-    console.error(`[${error.config?.method?.toUpperCase()}] ${error.config?.url}`, status, errorMessage);
+    console.error(`[${error.config?.method?.toUpperCase()}] ${error.config?.url}`, `(${status})`, errorMessage);
 
     // If access token expired or missing → renew token but don't retry request
     if (
