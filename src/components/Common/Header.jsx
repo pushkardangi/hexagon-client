@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { logo } from "../assets";
+import { logo } from "../../assets";
 import {
   Pencil,
   Images,
@@ -19,8 +19,8 @@ import {
   WandSparkles,
 } from "lucide-react";
 
-import { useAuthStore } from "../store";
-import { DropdownItem } from "./ui";
+import { useAuthStore } from "../../store";
+import DropdownItem from "../ui/DropdownItem"
 
 const Header = () => {
   const location = useLocation();

@@ -1,5 +1,5 @@
 import { CreditCard } from "lucide-react";
-import FeatureItem from "../FeatureItem";
+import FeatureItem from "../ui/FeatureItem";
 
 const BuyCreditsCard = () => {
   return (

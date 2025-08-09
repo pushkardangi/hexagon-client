@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Gift } from "lucide-react";
 import toast from "react-hot-toast";
-import FeatureItem from "../FeatureItem";
+import FeatureItem from "../ui/FeatureItem";
 import { redeemTheCode } from "../../api";
 
 const RedeemCodeCard = () => {
