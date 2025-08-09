@@ -31,7 +31,7 @@ const App = () => {
         position="bottom-left"
         reverseOrder={false}
         toastOptions={{
-          duration: 3000,
+          duration: 4000,
           style: {
             fontSize: "0.9rem",
             maxWidth: "100%",

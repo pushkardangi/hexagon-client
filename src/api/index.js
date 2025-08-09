@@ -1,3 +1,11 @@
+import {
+  registerUser,
+  loginUser,
+  renewTokens,
+  logoutUser,
+  requestPasswordReset,
+  confirmPasswordReset,
+} from "./auth.api";
 import { redeemTheCode } from "./billing.api";
 import {
   createRedeemCode,
@@ -10,6 +18,12 @@ import {
 } from "./admin/redeemCode.api";
 
 export {
+  registerUser,
+  loginUser,
+  renewTokens,
+  logoutUser,
+  requestPasswordReset,
+  confirmPasswordReset,
   redeemTheCode,
   createRedeemCode,
   getRedeemCodeInfo,
