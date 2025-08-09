@@ -8,6 +8,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const LoadingScreen = lazy(() => import("./components/Common/LoadingScreen"));
 
 const Home = lazy(() => import("./layouts/Home"));
 const CreateImage = lazy(() => import("./pages/CreateImage"));
@@ -40,7 +41,7 @@ const App = () => {
       />
 
       <Router>
-        <Suspense fallback={<div className="p-4 text-center text-gray-500">Loading...</div>}>
+        <Suspense fallback={<LoadingScreen />}>
           <Routes>
             {/* Protected Routes */}
             <Route
