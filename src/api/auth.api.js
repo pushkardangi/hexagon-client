@@ -39,3 +39,35 @@ export const logoutUser = async () => {
     return handleApiError(error);
   }
 };
+
+export const requestPasswordReset = async (email) => {
+  try {
+    const response = await axiosInstance.post(
+      "/auth/password-reset/request",
+      { email },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+};
+
+// const payload = {
+//   email,
+//   otp,
+//   newPassword,
+// };
+
+export const confirmPasswordReset = async (credentials) => {
+  try {
+    const response = await axiosInstance.post("/auth/password-reset/confirm", credentials, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    return handleApiError(error);
+  }
+};

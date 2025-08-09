@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 import { InputField } from "../components";
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,19 +15,23 @@ const ForgotPassword = () => {
 
     setLoading(true);
 
-    // Simulating API call
-    setTimeout(() => {
-      console.log("Magic link sent to:", email);
-      toast.success("Link has been sent to your email! Check your inbox", {
-        duration: 4000,
-      });
+    try {
+      const res = await axios.post("/api/v1/auth/request-reset", { email });
+
+      if (res.data?.success) {
+        toast.success(res.data.message || "OTP sent to your email");
+        // You can redirect to the next OTP verification step here if needed
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to send OTP");
+    } finally {
       setLoading(false);
-    }, 3000);
+    }
   };
 
-  const handleChange = (e) => {
-    setEmail(e.target.value);
-  };
+  const handleChange = (e) => setEmail(e.target.value);
 
   return (
     <div className="h-dvh w-full flex items-center justify-center bg-white">
@@ -36,7 +41,7 @@ const ForgotPassword = () => {
         <h2 className="text-5xl font-bold text-center">Reset Password</h2>
 
         <p className="text-sm text-gray-600 text-center mt-4">
-          Enter your email and we'll send you a link to get back into your account.
+          Enter your email address and we'll send you an OTP to reset your password.
         </p>
 
         {/* Form */}
@@ -59,10 +64,10 @@ const ForgotPassword = () => {
             {loading ? (
               <div className="flex justify-center gap-3">
                 <LoaderCircle className="animate-spin" />
-                Sending Login Link . . .
+                Sending OTP . . .
               </div>
             ) : (
-              "Send Login Link"
+              "Send OTP"
             )}
           </button>
         </form>
@@ -79,4 +84,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

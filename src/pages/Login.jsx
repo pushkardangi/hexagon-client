@@ -104,7 +104,7 @@ const Login = () => {
 
           {/* Forgot Password Page */}
           <div className="flex justify-end text-sm text-blue-600">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <Link to="/reset-password">Forgot Password?</Link>
           </div>
 
           {/* Submit Button */}

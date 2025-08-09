@@ -6,7 +6,7 @@ import { useAuthStore } from "./store";
 const Auth = lazy(() => import("./layouts/Auth"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
-const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 
 const Home = lazy(() => import("./layouts/Home"));
@@ -63,7 +63,7 @@ const App = () => {
               <Route path="register" element={<Register />} />
             </Route>
 
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
             <Route path="/admin" element={<AdminLayout />}>
