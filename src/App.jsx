@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store";
+import LogoutModal from "./components/Common/LogoutModal";
 
 const Auth = lazy(() => import("./layouts/Auth"));
 const Login = lazy(() => import("./pages/Login"));
@@ -73,6 +74,8 @@ const App = () => {
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+
+          <LogoutModal />
         </Suspense>
       </Router>
     </>

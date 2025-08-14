@@ -6,6 +6,7 @@ const useAuthStore = create(
     (set) => ({
       isAuthenticated: false,
       user: null,
+      showLogoutModal: false,
 
       login: (userData) =>
         set({
@@ -17,12 +18,23 @@ const useAuthStore = create(
         set({
           isAuthenticated: false,
           user: null,
+          showLogoutModal: false,
         }),
 
       setUser: (userData) =>
         set((state) => ({
           user: { ...state.user, ...userData },
         })),
+
+      showLogoutModalAction: () =>
+        set({
+          showLogoutModal: true,
+        }),
+
+      hideLogoutModal: () =>
+        set({
+          showLogoutModal: false,
+        }),
     }),
     {
       name: "hexagon-auth",

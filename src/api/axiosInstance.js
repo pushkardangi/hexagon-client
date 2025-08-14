@@ -1,5 +1,5 @@
 import axios from "axios";
-import { renewTokens } from "./auth.api";
+import { useAuthStore } from "../store";
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1",
@@ -13,17 +13,15 @@ export const handleApiError = async (error) => {
 
     console.error(`[${error.config?.method?.toUpperCase()}] ${error.config?.url}`, `(${status})`, errorMessage);
 
-    // If access token expired or missing → renew token but don't retry request
+    // If access token expired or missing → show logout modal
     if (
       status === 401 &&
       (errorMessage === "Access Token Expired!" || errorMessage === "Unauthorized! Access token is missing!")
     ) {
-      try {
-        await renewTokens();
-        return { data: null, error: "Token renewed. Please try the request again." };
-      } catch (tokenError) {
-        return { data: null, error: `Session expired. Please log in again: ${tokenError.message}` };
-      }
+      // Use Zustand store to show logout modal
+      const { showLogoutModalAction } = useAuthStore.getState();
+      showLogoutModalAction();
+      return { data: null, error: "Session expired" };
     }
 
     return { data: null, error: errorMessage };
