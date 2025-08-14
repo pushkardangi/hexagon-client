@@ -16,6 +16,7 @@ import {
   fetchBulkRedeemCodes,
   deleteBulkRedeemCodes,
 } from "./admin/redeemCode.api";
+import { fetchAllUsers } from "./admin/users";
 
 export {
   registerUser,
@@ -32,4 +33,5 @@ export {
   generateBulkRedeemCodes,
   fetchBulkRedeemCodes,
   deleteBulkRedeemCodes,
+  fetchAllUsers,
 };

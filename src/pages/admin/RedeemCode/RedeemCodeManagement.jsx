@@ -87,7 +87,7 @@ const RedeemCodeManagement = () => {
           <tbody>
             {codes.map((code) => (
               <tr key={code._id}>
-                <td className="p-2 border">
+                <td className="p-2 border text-center">
                   <input
                     type="checkbox"
                     checked={selectedCodes.includes(code._id)}

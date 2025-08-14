@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 
 const menuItems = [
   { path: "users", label: "User Management" },
-  { path: "billing", label: "Billing" },
   { path: "redeem-codes", label: "Redeem Code Management" },
 ];
 
