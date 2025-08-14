@@ -17,8 +17,8 @@ const BillingOptions = lazy(() => import("./pages/BillingOptions"));
 const UserProfile = lazy(() => import("./components/Profile/ProfileContainer"));
 
 const AdminLayout = lazy(() => import("./layouts/Admin"));
-const UserManagement = lazy(() => import("./pages/Admin/User/UserManagement"));
-const RedeemCodeManagement = lazy(() => import("./pages/Admin/RedeemCode/RedeemCodeManagement"));
+const UserManagement = lazy(() => import("./pages/Adminl/Userl/UserManagement"));
+const RedeemCodeManagement = lazy(() => import("./pages/Adminl/RedeemCodel/RedeemCodeManagement"));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);

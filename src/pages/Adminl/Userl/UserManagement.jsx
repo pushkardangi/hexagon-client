@@ -4,7 +4,7 @@ import { fetchAllUsers } from "../../../api";
 
 const UserManagement = () => {
   const { data, error, isLoading } = useSWR("users", fetchAllUsers);
-  // const paginationData = data.pagination;
+  // const paginationData = data.pagination; // comment
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading users!</div>;
