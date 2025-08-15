@@ -4,7 +4,7 @@ import RedeemCodeCard from "./RedeemCodeCard";
 
 const BillingContainer = () => {
   return (
-    <div className="max-w-4xl mx-auto px- py-10">
+    <div className="max-w-4xl mx-auto py-14">
       <BillingHeader />
 
       <div className="grid sm:grid-cols-2 gap-6">

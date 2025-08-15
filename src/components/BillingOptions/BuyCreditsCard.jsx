@@ -3,7 +3,7 @@ import FeatureItem from "../ui/FeatureItem";
 
 const BuyCreditsCard = () => {
   return (
-    <div className="border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-white md:min-h-[420px] flex flex-col justify-between">
+    <div className="border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-white flex flex-col justify-between">
       <div>
         <div className="flex items-center gap-3 mb-5">
           <CreditCard className="w-6 h-6 text-blue-600" />

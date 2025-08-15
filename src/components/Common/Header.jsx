@@ -49,7 +49,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="w-full flex justify-between items-center bg-white px-4 sm:px-8 py-4 border-b border-custom">
+    <header className="w-full fixed top-0 left-0 z-50 flex justify-between items-center bg-white px-4 sm:px-8 py-4 border-b border-custom">
       <Link to="/" className="flex items-center">
         <img src={logo || "/placeholder.svg"} alt="app logo" className="w-9 sm:w-10 object-contain" />
         <span className="font-inter font-medium text-lg sm:text-xl ml-1 sm:ml-2">Hexagon</span>

@@ -156,7 +156,7 @@ const CreateImage = () => {
   }, [image.imageUrl]);
 
   return (
-    <section className="max-w-7xl mx-auto">
+    <section className="max-w-7xl mx-auto relative">
       <div>
         <h1 className="font-extrabold text-black text-4xl">Create</h1>
         <p className="mt-2 text-gray-600 text-sm">
