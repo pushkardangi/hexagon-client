@@ -16,6 +16,7 @@ const CreateImage = lazy(() => import("./pages/CreateImage"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const BillingOptions = lazy(() => import("./pages/BillingOptions"));
 const UserProfile = lazy(() => import("./components/Profile/ProfileContainer"));
+const Documentation = lazy(()=> import("./pages/Documentation/Documentation"));
 const ReportBug = lazy(()=> import("./pages/ReportBug/ReportBug"));
 
 const AdminLayout = lazy(() => import("./layouts/Admin"));
@@ -58,6 +59,7 @@ const App = () => {
               <Route path="gallery" element={<Gallery />} />
               <Route path="profile" element={<UserProfile />} />
               <Route path="billing" element={<BillingOptions />} />
+              <Route path="documentation" element={<Documentation />} />
               <Route path="report-bug" element={<ReportBug />} />
             </Route>
 

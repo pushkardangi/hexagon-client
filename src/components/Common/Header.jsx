@@ -124,7 +124,7 @@ const Header = () => {
                 </div>
 
                 <div className="border-t border-custom">
-                  <DropdownItem href="/" icon={BookOpen} label="Documentation" disabled />
+                  <DropdownItem href="/documentation" icon={BookOpen} label="Documentation" />
                   <DropdownItem href="/" icon={WandSparkles} label="Pro Tips" disabled />
                 </div>
 
