@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Rocket, Sparkles, HelpCircle, Brain, CreditCard, Shield, Lightbulb, ChevronRight } from "lucide-react";
+import { Rocket, Sparkles, HelpCircle, Brain, CreditCard, Shield, Lightbulb } from "lucide-react";
+import { Breadcrumbs } from "../../components";
 
 const sections = [
   { id: "getting-started", title: "Getting Started", icon: Rocket },
@@ -28,14 +28,9 @@ const Documentation = () => {
     <div className="flex w-full h-full md:pl-5">
       {/* Sidebar */}
       <aside className="hidden md:flex flex-col w-72 shrink-0 pr-6 border-r border-gray-200">
-        <h2 className="text-lg font-semibold mb-4 flex items-center gap-1">
-          <Link to="/" className="text-blue-600 hover:underline hover:text-blue-800 transition-colors">
-            Home
-          </Link>
-          <ChevronRight className="w-5 h-5 text-gray-500" />
-          <span className="text-gray-60 select-none">Documentation</span>
-        </h2>
-        <nav className="flex flex-col space-y-2">
+        <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Documentation" }]} />
+
+        <nav className="flex flex-col mt-6 space-y-2">
           {sections.map((s) => {
             const Icon = s.icon;
             return (
@@ -55,7 +50,7 @@ const Documentation = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-2 md:p-6 overflow-y-auto space-y-12 scrollbar-hide">
+      <main className="flex-1 p-2 md:px-8 overflow-y-auto space-y-12 scrollbar-hide">
         <motion.section id="getting-started" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <h1 className="text-3xl font-bold mb-4 flex items-center gap-2">
             <Rocket className="h-7 w-7 text-indigo-600" />

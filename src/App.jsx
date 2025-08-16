@@ -18,6 +18,7 @@ const BillingOptions = lazy(() => import("./pages/BillingOptions"));
 const UserProfile = lazy(() => import("./components/Profile/ProfileContainer"));
 const Documentation = lazy(()=> import("./pages/Documentation/Documentation"));
 const ReportBug = lazy(()=> import("./pages/ReportBug/ReportBug"));
+const WhatsNew = lazy(()=> import("./pages/WhatsNew/WhatsNew"));
 
 const AdminLayout = lazy(() => import("./layouts/Admin"));
 const UserManagement = lazy(() => import("./pages/Admin/User/UserManagement"));
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="billing" element={<BillingOptions />} />
               <Route path="documentation" element={<Documentation />} />
               <Route path="report-bug" element={<ReportBug />} />
+              <Route path="whats-new" element={<WhatsNew />} />
             </Route>
 
             {/* Auth Routes */}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { reportBug } from "../../api";
+import { ShoutOutCard } from "../../components";
 
 const ReportBug = () => {
   const navigate = useNavigate();
@@ -124,8 +125,15 @@ const ReportBug = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg max-w-2xl w-full p-6">
+    <div>
+      <div className="max-w-5xl w-full p-2 md:px-6 pb-10">
+        <ShoutOutCard
+          title="Get Featured in What’s New!"
+          description="Every helpful bug report increases your chance of a shout-out in our upcoming features & fixes page."
+          ctaText="Check What’s New →"
+          ctaLink="/whats-new"
+        />
+
         <h1 className="text-2xl font-bold mb-6">Report a Bug</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
