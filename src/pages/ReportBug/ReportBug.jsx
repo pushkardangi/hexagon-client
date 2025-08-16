@@ -12,7 +12,7 @@ const ReportBug = () => {
   const [severity, setSeverity] = useState("");
   const [browser, setBrowser] = useState("");
   const [deviceType, setDeviceType] = useState("");
-  const [deviceName, setDeviceName] = useState("");
+  const [os, setOs] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -56,6 +56,13 @@ const ReportBug = () => {
     }
 
     setDeviceType(deviceType);
+
+    const osInfo = ua.match(/\(([^)]+)\)/)?.[1];
+    if (osInfo) {
+      setOs(osInfo);
+    } else if (navigator.userAgentData) {
+      setOs(navigator.userAgentData.platform);
+    }
   }, []);
 
   const resetFormandGoBack = () => {
@@ -65,7 +72,7 @@ const ReportBug = () => {
     setSeverity("");
     setBrowser("");
     setDeviceType("");
-    setDeviceName("");
+    setOs("");
 
     navigate(-1);
   };
@@ -78,9 +85,9 @@ const ReportBug = () => {
     const normDescription = description.trim();
     const normBrowser = browser.trim();
     const normDeviceType = deviceType.trim();
-    const normDeviceName = deviceName.trim();
+    const normOs = os.trim();
 
-    if (!normTitle || !normType || !normDescription || !severity || !normBrowser || !normType || !normDeviceName) {
+    if (!normTitle || !normType || !normDescription || !severity || !normBrowser || !normType || !normOs) {
       toast.error("Please fill all required fields.");
       return;
     }
@@ -96,7 +103,7 @@ const ReportBug = () => {
         environment: {
           browser: normBrowser,
           deviceType: normDeviceType,
-          deviceName: normDeviceName,
+          os: normOs,
         },
       };
 
@@ -108,7 +115,6 @@ const ReportBug = () => {
         setType("");
         setDescription("");
         setSeverity("");
-        setDeviceName("");
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to report bug.");
@@ -138,13 +144,14 @@ const ReportBug = () => {
           {/* Bug Type */}
           <div>
             <label className="block text-sm font-medium mb-1">Bug Type *</label>
-            <input
-              type="text"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full border rounded px-3 py-2"
-              placeholder="UI, Backend, Performance, etc."
-            />
+            <select value={type} onChange={(e) => setType(e.target.value)} className="w-full border rounded px-3 py-2">
+              <option value="">Select Bug Type</option>
+              <option value="UI">UI</option>
+              <option value="Backend">Backend</option>
+              <option value="Performance">Performance</option>
+              <option value="Security">Security</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
 
           {/* Description */}
@@ -195,11 +202,11 @@ const ReportBug = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Device Name *</label>
+              <label className="block text-sm font-medium mb-1">Operating System *</label>
               <input
                 type="text"
-                value={deviceName}
-                onChange={(e) => setDeviceName(e.target.value)}
+                value={os}
+                onChange={(e) => setOs(e.target.value)}
                 className="w-full border rounded px-3 py-2"
               />
             </div>
