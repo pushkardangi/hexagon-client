@@ -62,7 +62,7 @@ const App = () => {
             </Route>
 
             {/* Auth Routes */}
-            <Route path="/auth/*" element={<Auth />}>
+            <Route path="/auth" element={<Auth />}>
               <Route index path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
             </Route>
