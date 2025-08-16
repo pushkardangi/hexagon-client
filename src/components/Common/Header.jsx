@@ -129,9 +129,9 @@ const Header = () => {
                 </div>
 
                 <div className="border-t border-custom">
-                  <DropdownItem href="/" icon={Lightbulb} label="Feature Request" />
-                  <DropdownItem href="/" icon={Bug} label="Report a Bug" />
-                  <DropdownItem href="/" icon={Sparkles} label="What's New" />
+                  <DropdownItem href="/feature-request" icon={Lightbulb} label="Feature Request" />
+                  <DropdownItem href="/report-bug" icon={Bug} label="Report a Bug" />
+                  <DropdownItem href="/whats-new" icon={Sparkles} label="What's New" />
                 </div>
 
                 <div className="border-t border-custom py-1">

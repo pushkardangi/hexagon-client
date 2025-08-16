@@ -17,6 +17,7 @@ import {
   deleteBulkRedeemCodes,
 } from "./admin/redeemCode.api";
 import { fetchAllUsers } from "./admin/users";
+import { reportBug } from "./admin/bugs.api";
 
 export {
   registerUser,
@@ -34,4 +35,5 @@ export {
   fetchBulkRedeemCodes,
   deleteBulkRedeemCodes,
   fetchAllUsers,
+  reportBug,
 };
