@@ -37,12 +37,14 @@ const WhatsNew = () => {
       {/* Breadcrumb */}
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "What's New" }]} />
 
-      {/* Page Title */}
-      <h1 className="text-2xl font-bold">What's New</h1>
-      <p className="text-gray-600">
-        Explore the latest updates with a sneak peek at new features, improvements, and fixes—while celebrating the
-        valuable contributions of our contributors.
-      </p>
+      {/* Header */}
+      <div className="space-y-2">
+        <h1 className="text-2xl font-bold">What's New</h1>
+        <p className="text-gray-600">
+          Explore the latest updates with a sneak peek at new features, improvements, and fixes—while celebrating the
+          valuable contributions of our contributors.
+        </p>
+      </div>
 
       {/* Updates List */}
       <div className="space-y-8">

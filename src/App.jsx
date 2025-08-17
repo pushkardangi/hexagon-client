@@ -17,6 +17,7 @@ const Gallery = lazy(() => import("./pages/Gallery"));
 const BillingOptions = lazy(() => import("./pages/BillingOptions"));
 const UserProfile = lazy(() => import("./components/Profile/ProfileContainer"));
 const Documentation = lazy(()=> import("./pages/Documentation/Documentation"));
+const FeatureRequest = lazy(()=> import("./pages/FeatureRequest/FeatureRequest"));
 const ReportBug = lazy(()=> import("./pages/ReportBug/ReportBug"));
 const WhatsNew = lazy(()=> import("./pages/WhatsNew/WhatsNew"));
 
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="profile" element={<UserProfile />} />
               <Route path="billing" element={<BillingOptions />} />
               <Route path="documentation" element={<Documentation />} />
+              <Route path="feature-request" element={<FeatureRequest />} />
               <Route path="report-bug" element={<ReportBug />} />
               <Route path="whats-new" element={<WhatsNew />} />
             </Route>

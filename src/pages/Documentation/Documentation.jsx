@@ -25,7 +25,7 @@ const Documentation = () => {
   };
 
   return (
-    <div className="flex w-full h-full md:pl-5">
+    <div className="flex w-full md:h-[calc(100vh-10rem)] md:pl-5">
       {/* Sidebar */}
       <aside className="hidden md:flex flex-col w-72 shrink-0 pr-6 border-r border-gray-200">
         <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Documentation" }]} />
