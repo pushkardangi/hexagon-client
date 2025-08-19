@@ -5,12 +5,14 @@ import toast from "react-hot-toast";
 
 const RequestFeature = () => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const initialFormData = {
     title: "",
     priority: "low",
     description: "",
     useCase: "",
-  });
+  };
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +65,12 @@ const RequestFeature = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleReset = async (e) => {
+    e.preventDefault();
+    setFormData(initialFormData);
+    e.currentTarget.blur();
   };
 
   return (
@@ -125,10 +133,15 @@ const RequestFeature = () => {
           labelClassName="block text-sm font-medium mb-1"
         />
 
-        {/* Submit */}
-        <Button type="submit" disabled={loading}>
-          Submit Feature Request
-        </Button>
+        {/* Submit + Cancel */}
+        <div className="flex gap-4 justify-end">
+          <Button type="button" onClick={handleReset} variant="outline" disabled={loading}>
+            Reset
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Submitting Feature Request" : "Submit Feature Request"}
+          </Button>
+        </div>
       </form>
     </main>
   );
