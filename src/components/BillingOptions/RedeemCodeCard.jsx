@@ -44,7 +44,7 @@ const RedeemCodeCard = () => {
           <FeatureItem>One-time use promo and event codes</FeatureItem>
           <FeatureItem>Instant credit addition on valid code</FeatureItem>
           <FeatureItem>No payment information required</FeatureItem>
-          <FeatureItem>Codes can unlock premium access too</FeatureItem>
+          <FeatureItem>Unlocks all premium feature access</FeatureItem>
         </ul>
       </div>
       <div className="flex flex-wrap items-center justify-center sm:flex-nowrap gap-2">
