@@ -18,6 +18,7 @@ import {
 } from "./admin/redeemCode.api";
 import { fetchAllUsers } from "./admin/users";
 import { reportBug } from "./admin/bugs.api";
+import { submitFeatureRequest, getFeatureUpdates } from "./support.api";
 
 export {
   registerUser,
@@ -36,4 +37,6 @@ export {
   deleteBulkRedeemCodes,
   fetchAllUsers,
   reportBug,
+  submitFeatureRequest,
+  getFeatureUpdates,
 };

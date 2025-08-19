@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Breadcrumbs, Button, InputField, SelectField, TextAreaField } from "../../components";
+import { submitFeatureRequest } from "../../api";
+import toast from "react-hot-toast";
 
 const RequestFeature = () => {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
+    priority: "low",
     description: "",
     useCase: "",
-    priority: "medium",
   });
 
   const handleChange = (e) => {
@@ -14,10 +17,52 @@ const RequestFeature = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Feature request submitted:", formData);
-    // TODO: send to backend
+
+    // Trim values first
+    const trimmedData = {
+      title: formData.title.trim(),
+      priority: formData.priority.trim(),
+      description: formData.description.trim(),
+      useCase: formData.useCase.trim(),
+    };
+
+    // Validation after trimming
+    if (!trimmedData.title) {
+      toast.error("Feature title is required");
+      return;
+    }
+    if (!trimmedData.description) {
+      toast.error("Feature description is required");
+      return;
+    }
+    if (!trimmedData.useCase) {
+      toast.error("Use case is required");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await submitFeatureRequest(trimmedData);
+
+      if (response?.statusCode === 201) {
+        toast.success(response?.message);
+      } else {
+        toast.error(response?.message || "Failed to submit feature request");
+      }
+
+      setFormData({
+        title: "",
+        priority: "low",
+        description: "",
+        useCase: "",
+      });
+    } catch (error) {
+      console.error("Error submitting feature request:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,8 +94,8 @@ const RequestFeature = () => {
           value={formData.priority}
           onChange={(val) => setFormData({ ...formData, priority: val })}
           options={[
-            { value: "low", label: "Low" },
-            { value: "medium", label: "Medium (default)" },
+            { value: "low", label: "Low  (default)" },
+            { value: "medium", label: "Medium" },
             { value: "high", label: "High" },
           ]}
           placeholder="Select Priority"
@@ -81,7 +126,9 @@ const RequestFeature = () => {
         />
 
         {/* Submit */}
-        <Button type="submit">Submit Feature Request</Button>
+        <Button type="submit" disabled={loading}>
+          Submit Feature Request
+        </Button>
       </form>
     </main>
   );
