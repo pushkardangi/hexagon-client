@@ -66,48 +66,47 @@ const RedeemCodeManagement = () => {
       {isLoading ? (
         <p>Loading codes...</p>
       ) : (
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 border">
+        <div className="w-full border border-gray-300 max-h-[600px] overflow-y-auto">
+          {/* Header */}
+          <div className="grid grid-cols-[50px,minmax(160px,1fr),minmax(80px,1fr),minmax(140px,1fr),minmax(80px,1fr),minmax(100px,2fr),minmax(150px,2fr)] bg-gray-100 font-semibold sticky top-0 z-10">
+            <div className="p-2 border text-center">
+              <input
+                type="checkbox"
+                checked={selectedCodes?.length === codes.length && codes.length > 0}
+                onChange={(e) => setSelectedCodes(e.target.checked ? codes.map((c) => c._id) : [])}
+              />
+            </div>
+            <div className="p-2 border">Code</div>
+            <div className="p-2 border">Credits</div>
+            <div className="p-2 border">Expiry</div>
+            <div className="p-2 border">Used</div>
+            <div className="p-2 border">Used By</div>
+            <div className="p-2 border">Used At</div>
+          </div>
+
+          {/* Row */}
+          {codes.map((code) => (
+            <div key={code._id} className="grid grid-cols-[50px,minmax(160px,1fr),minmax(80px,1fr),minmax(140px,1fr),minmax(80px,1fr),minmax(100px,2fr),minmax(150px,2fr)] hover:bg-gray-50">
+              <div className="p-2 border text-center">
                 <input
                   type="checkbox"
-                  checked={selectedCodes?.length === codes.length && codes.length > 0}
-                  onChange={(e) => setSelectedCodes(e.target.checked ? codes.map((c) => c._id) : [])}
+                  checked={selectedCodes.includes(code._id)}
+                  onChange={(e) =>
+                    setSelectedCodes((prev) =>
+                      e.target.checked ? [...prev, code._id] : prev.filter((id) => id !== code._id)
+                    )
+                  }
                 />
-              </th>
-              <th className="p-2 border">Code</th>
-              <th className="p-2 border">Credits</th>
-              <th className="p-2 border">Expiry</th>
-              <th className="p-2 border">Used</th>
-              <th className="p-2 border">Used By</th>
-              <th className="p-2 border">Used At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {codes.map((code) => (
-              <tr key={code._id}>
-                <td className="p-2 border text-center">
-                  <input
-                    type="checkbox"
-                    checked={selectedCodes.includes(code._id)}
-                    onChange={(e) =>
-                      setSelectedCodes((prev) =>
-                        e.target.checked ? [...prev, code._id] : prev.filter((id) => id !== code._id)
-                      )
-                    }
-                  />
-                </td>
-                <td className="p-2 border">{code.code}</td>
-                <td className="p-2 border">{code.credits}</td>
-                <td className="p-2 border">{formatDate(code.expiresAt)}</td>
-                <td className="p-2 border">{code.isUsed ? "Yes" : "No"}</td>
-                <td className="p-2 border">{code.usedBy || "-"}</td>
-                <td className="p-2 border">{formatDateTime(code.usedAt)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </div>
+              <div className="p-2 border">{code.code}</div>
+              <div className="p-2 border">{code.credits}</div>
+              <div className="p-2 border">{formatDate(code.expiresAt)}</div>
+              <div className="p-2 border">{code.isUsed ? "Yes" : "No"}</div>
+              <div className="p-2 border truncate">{code.usedBy || "-"}</div>
+              <div className="p-2 border truncate">{formatDateTime(code.usedAt)}</div>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Modals */}
